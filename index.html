@@ -1096,8 +1096,17 @@ html[data-hc="1"] :focus-visible{outline:3px solid #ffe14d;outline-offset:2px}
   /* ---------- full page scroller ---------- */
   var track = $('#track'), secs = track ? $$('.sec', track) : [];
   var idx = 0, vh = window.innerHeight / fsNow, lastFlip = 0, lastFlipP = -1e9, lastInner = -1e9;
+  /* видимая высота: меньшее из окна и «малого» экрана (100svh — с показанными панелями браузера, адресной строкой и полоской жестов);
+     на Android во встроенном браузере Telegram и в Chrome окно бывает выше видимой части — тогда низ экрана уходил под край */
+  function visH() {
+    var h = window.innerHeight, c = document.documentElement.clientHeight;
+    if (c && c < h) h = c;
+    try { var pr = document.createElement('div'); pr.style.cssText = 'position:fixed;top:0;left:0;width:0;height:100svh;visibility:hidden;pointer-events:none';
+      document.body.appendChild(pr); var sv = pr.offsetHeight; pr.remove(); if (sv > 0 && sv < h) h = sv; } catch (e) { }
+    return h;
+  }
   function setVh() {
-    vh = window.innerHeight / fsNow; html.style.setProperty('--vh', vh + 'px');   /* в «масштабных» пикселях страницы */
+    vh = visH() / fsNow; html.style.setProperty('--vh', vh + 'px');   /* в «масштабных» пикселях страницы */
     if (!track) return;
     track.classList.add('no-anim'); track.style.transform = 'translateY(' + (-idx * vh) + 'px)';
     void track.offsetHeight; track.classList.remove('no-anim');
@@ -1228,6 +1237,8 @@ html[data-hc="1"] :focus-visible{outline:3px solid #ffe14d;outline-offset:2px}
     setVh();
     window.addEventListener('resize', setVh);
     window.addEventListener('orientationchange', function () { setTimeout(setVh, 200); });
+    if (window.visualViewport) visualViewport.addEventListener('resize', function () { setVh(); if (typeof scheduleFit === 'function') scheduleFit(); });
+    [400, 1200, 2500].forEach(function (t) { setTimeout(function () { setVh(); if (typeof scheduleFit === 'function') scheduleFit(); }, t); });   /* панели встроенного браузера встают на место не сразу */
     window.addEventListener('wheel', onWheel, { passive: false });
     window.addEventListener('touchstart', onTouchStart, { passive: true });
     window.addEventListener('touchmove', onTouchMove, { passive: false });
