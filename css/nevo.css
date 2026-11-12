@@ -382,3 +382,46 @@ html[data-theme="dark"] .nk-road::before{background:linear-gradient(180deg,rgba(
   .nk-xbtn{min-height:56px;padding:10px 14px}
   #more .foot{margin-top:10px;font-size:12.5px}
 }
+/* ================= 12.11, пятая волна: без наездов на телефонах ================= */
+@media (max-width:767px){
+  /* точки навигации справа не прижимаются к карточкам */
+  .sec:not(.sec-hero) .sec-scroll{padding-right:max(20px,env(safe-area-inset-right,0px))!important}
+  .dots{right:-16px}
+  /* в «Контактах» обе кнопки маршрута — в одну строку */
+  #contacts .map-actions .btn .ico{display:none}
+  #contacts .map-actions .btn{padding:6px 5px;font-size:13.5px}
+  /* «Об автошколе»: дорога с машиной — узкой полосой ниже кнопок */
+  .nk-road{height:40px}
+  .nk-road::before{height:26px}
+  .nk-lane{bottom:11px}
+  .nk-car{bottom:6px;width:64px;height:24px}
+  #about .sec-scroll{padding-bottom:calc(var(--bar-h,60px) + 48px + env(safe-area-inset-bottom,0px))!important}
+}
+/* планшеты и небольшие ноутбуки: карточки не заходят под точки навигации */
+@media (min-width:768px) and (max-width:1439px){
+  .sec:not(.sec-hero) .sec-scroll{padding-right:52px!important}
+}
+@media (max-width:400px){
+  /* длинные слова в плитках услуг («Индивидуальное», «Контраварийная») не заходят под стрелку */
+  .nk-tile{padding-right:22px}
+  .nk-tile>.ico{right:6px;width:14px;height:14px}
+  .nk-tile b{font-size:14px;-webkit-hyphens:auto;hyphens:auto}
+}
+@media (max-width:767px) and (max-height:700px){
+  /* низкие телефоны: места под дорогу нет — убираем её, кнопки не ложатся на машину */
+  .nk-road{display:none}
+  #about .sec-scroll{padding-bottom:calc(var(--bar-h) + 6px + env(safe-area-inset-bottom,0px))!important}
+}
+/* часы приёма не рвутся посередине («Сб 10–» / «14») */
+.nk-cl .nw{white-space:nowrap}
+@media (max-width:767px){
+  /* под кнопками маршрута не светится подложка карточки */
+  #contacts .mapbox::before,#contacts .mapbox::after{display:none}
+}
+/* планшеты и ноутбуки: дорога с машиной стоит над нижней панелью, а не под ней */
+@media (min-width:768px){
+  .nk-road{height:96px;bottom:calc(var(--bar-h,60px) + 2px + env(safe-area-inset-bottom,0px))}
+}
+@media (min-width:768px) and (max-width:991px){
+  .nk-road{bottom:calc(var(--bar-h,60px) + 10px + env(safe-area-inset-bottom,0px))}
+}
