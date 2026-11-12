@@ -196,3 +196,66 @@ ul.nk-list{list-style:disc}
   .nk-docs small{display:none}
   .foot .fl a{padding:12px 0;margin:-6px 16px -6px 0}
 }
+
+/* ================= 12.11, вторая волна ================= */
+/* отзывы и документы — кнопками в конце «Контактов», открываются окнами */
+.nk-extra{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+.nk-xbtn{display:flex;align-items:center;gap:12px;min-height:64px;padding:12px 16px;border-radius:14px;text-align:left;cursor:pointer;
+  background:var(--card,rgba(255,255,255,.88));border:1px solid var(--line2,rgba(22,60,110,.16));color:inherit;font:inherit;box-shadow:var(--shadow,0 1px 12px rgba(22,60,110,.14))}
+.nk-xbtn:hover{border-color:var(--accent,#1f5fa8)}
+.nk-xbtn>.ico{width:24px;height:24px;color:var(--accent,#1f5fa8);flex:none}
+.nk-xbtn>.ico:last-child{width:18px;height:18px;margin-left:auto;opacity:.7}
+.nk-xbtn span{display:grid;gap:2px;min-width:0}
+.nk-xbtn b{font-size:16px}
+.nk-xbtn small{font-size:13px;color:var(--muted)}
+.nk-docs-m{grid-template-columns:1fr;overflow-y:auto;margin-top:12px}
+@media (max-width:767px){.nk-extra{grid-template-columns:1fr}}
+
+/* телефон: плашка первого экрана компактнее — собор виден над ней */
+@media screen and (max-width:767px){
+  .hero-plq{padding:14px 16px 16px}
+  .hw{font-size:clamp(32px,calc(11.5*var(--vwu,1vw)),54px)}
+  .hn{font-size:17px}
+  .hero-h1{margin-top:6px}
+  .hero-lead,.hero-cats{display:none}
+  .hero-cta{flex-wrap:nowrap;margin-top:12px;gap:8px}
+  .hero-cta .btn-glass.btn-book{flex:1 1 auto}
+  .hero-cta .btn-glass.btn-call{flex:0 0 52px;width:52px;padding:0}
+  .hero-cta .btn-glass.btn-call span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+}
+
+/* телефон: без размытия под плашками — оно и давало рывки при перелистывании экранов; плашки плотнее */
+@media (max-width:767px),(pointer:coarse){
+  .glass,.hdr,.bar,.mmenu,.modal,.mbox,.sec-head,.cbox,.foot{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+  html[data-theme="light"]:not([data-hc="1"]) .sec-hero{--glass:rgba(255,255,255,.88)}
+  html[data-theme="light"]:not([data-hc="1"]) .glass{background-color:rgba(255,255,255,.9)}
+}
+
+/* «Об автошколе»: на фоне дорога с бегущей разметкой и проезжающая машина; играет, только пока экран открыт */
+.nk-road{position:absolute;left:0;right:0;bottom:0;height:150px;overflow:hidden;pointer-events:none}
+.nk-road::before{content:"";position:absolute;left:0;right:0;bottom:0;height:86px;background:linear-gradient(180deg,rgba(31,95,168,.10),rgba(31,95,168,.22));border-top:2px solid rgba(255,255,255,.7)}
+.nk-lane{position:absolute;left:0;bottom:40px;width:calc(100% + 120px);height:5px;opacity:.85;
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.95) 0 60px,transparent 60px 120px);
+  animation:nkLane 1.6s linear infinite;animation-play-state:paused;will-change:transform}
+.nk-car{position:absolute;left:0;bottom:46px;width:120px;height:44px;opacity:.9;transform:translateX(-140px);
+  animation:nkCar 11s linear infinite;animation-play-state:paused;will-change:transform}
+#about.active .nk-lane,#about.active .nk-car{animation-play-state:running}
+@keyframes nkLane{to{transform:translateX(-120px)}}
+@keyframes nkCar{0%{transform:translateX(-140px)}55%,100%{transform:translateX(calc(100vw + 20px))}}
+html[data-theme="dark"] .nk-road::before{background:linear-gradient(180deg,rgba(91,143,204,.08),rgba(91,143,204,.18))}
+@media (prefers-reduced-motion:reduce){.nk-lane,.nk-car{animation:none}.nk-car{display:none}}
+@media (max-width:767px){.nk-road{height:120px}.nk-road::before{height:70px}.nk-lane{bottom:32px}.nk-car{bottom:36px;width:96px;height:35px}}
+/* телефон: при смене экрана не проявляем по очереди десятки карточек и не рисуем тяжёлые тени — меньше работы во время перелистывания */
+@media (max-width:767px),(pointer:coarse){
+  .nk-sec .rv:not(.kicker):not(.h2):not(.lead),#contacts .rv:not(.kicker):not(.h2){opacity:1!important;translate:0 0!important;transition:none!important}
+  .nk-card,.nk-box,.nk-rev,.nk-xbtn,.nk-docs a,.nk-why li{box-shadow:none!important}
+  html[data-theme="light"]:not([data-hc="1"]) .sec:not(.sec-hero) :is(.sec-head,.cbox,.foot){box-shadow:0 2px 8px rgba(22,60,110,.12)!important}
+}
+.nk-tickets{font-size:14.5px}
+.nk-tickets a{display:inline-block;padding:8px 0;text-decoration:underline;text-underline-offset:3px}
+/* без размытия шапка и нижняя панель должны быть плотными — иначе сквозь них просвечивает текст */
+@media (max-width:767px),(pointer:coarse){
+  html[data-theme="light"]:not([data-hc="1"]) .hdr,html[data-theme="light"]:not([data-hc="1"]) .bar{background:#fff!important}
+  html[data-theme="dark"] .hdr,html[data-theme="dark"] .bar{background:#0a0c10!important}
+}
+@media (max-width:767px){.nk-road{bottom:calc(var(--bar-h,60px) + env(safe-area-inset-bottom,0px))}}
