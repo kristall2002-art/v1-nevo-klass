@@ -679,3 +679,8 @@ html[data-theme="dark"] .vb2 .mp-dot{fill:#5b8fcc}html[data-theme="dark"] .vb2 .
 html[data-theme="dark"] .v4-veil{background:linear-gradient(180deg,rgba(12,22,38,.55),rgba(16,30,50,.5))}
 /* вне активного раздела всё стоит */
 .sec:not(.active) .vb *{animation-play-state:paused!important}
+/* телефон: фоны чуть контрастнее — экран маленький, карточки закрывают большую часть */
+@media (max-width:767px){
+  .vb1 .t-lane{stroke:rgba(31,95,168,.32)}.vb1 .t-core{stroke-width:5}.vb1 .t-halo{stroke-width:14;opacity:.38}
+  .vb2 .mp-m1{stroke:rgba(31,95,168,.5)}.vb2 .mp-m2{stroke:rgba(31,95,168,.4)}.vb2 .mp-m3{stroke:rgba(31,95,168,.28)}
+}
