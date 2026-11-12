@@ -259,3 +259,80 @@ html[data-theme="dark"] .nk-road::before{background:linear-gradient(180deg,rgba(
   html[data-theme="dark"] .hdr,html[data-theme="dark"] .bar{background:#0a0c10!important}
 }
 @media (max-width:767px){.nk-road{bottom:calc(var(--bar-h,60px) + env(safe-area-inset-bottom,0px))}}
+
+/* ================= 12.11, третья волна: каждый экран — в один экран телефона ================= */
+.nk-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.nk-tile{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:6px;text-align:left;cursor:pointer;font:inherit;color:inherit;
+  min-height:96px;padding:14px 34px 14px 16px;border-radius:14px;background:var(--card,rgba(255,255,255,.9));border:1px solid var(--line2,rgba(22,60,110,.16));box-shadow:var(--shadow,0 1px 12px rgba(22,60,110,.14))}
+.nk-tile:hover{border-color:var(--accent,#1f5fa8)}
+.nk-tile b{font-size:17px;line-height:1.25}
+.nk-tile small{font-size:14px;line-height:1.35;color:var(--accent-d,#174a86);font-weight:600}
+.nk-tile>.ico{position:absolute;right:12px;top:14px;width:16px;height:16px;color:var(--accent,#1f5fa8);opacity:.7}
+.nk-hint{margin:12px 0 0;font-size:14px;color:var(--muted)}
+.nk-intro{margin:0 0 12px;font-size:16px;line-height:1.5}
+.nk-why2{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.nk-why2 li{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:12px;background:var(--card,rgba(255,255,255,.88));border:1px solid var(--line2,rgba(22,60,110,.16));font-size:15px;line-height:1.35}
+.nk-why2 .ico{width:20px;height:20px;flex:none;color:var(--accent,#1f5fa8);margin-top:1px}
+.nk-btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.nk-btns .btn{min-height:48px;justify-content:center}
+.nk-list-big{font-size:16px;gap:8px;padding:16px 20px 16px 36px;border-radius:16px;background:var(--card,rgba(255,255,255,.88));border:1px solid var(--line2,rgba(22,60,110,.16))}
+.nk-team{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.nk-team .nk-person{padding:14px 16px;border-radius:14px;background:var(--card,rgba(255,255,255,.88));border:1px solid var(--line2,rgba(22,60,110,.16))}
+.nk-contacts{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr)!important}
+.nk-cl{gap:10px}
+.nk-bookwrap{max-width:560px;margin:0 auto;width:100%}
+.nk-bookwrap .cbox.form{padding:18px 20px}
+.nk-mbody{overflow-y:auto;display:grid;gap:12px;margin-top:12px;padding-right:4px}
+.nk-mbody .nk-list{font-size:15px}
+.nk-h4{margin:4px 0 0;font-size:16px}
+.nk-mbtn{justify-content:center;min-height:48px}
+#more .nk-extra{margin-top:0}
+#more .foot{margin-top:16px}
+@media (max-width:991px){.nk-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.nk-team{grid-template-columns:1fr}.nk-contacts{grid-template-columns:1fr!important}}
+@media (max-width:767px){
+  .nk-sec .sec-head{margin-bottom:10px;padding:10px 14px!important}
+  .nk-sec .sec-head .h2{font-size:23px;margin-top:2px}
+  .nk-sec .sec-head .kicker{font-size:11.5px}
+  .nk-tiles{gap:8px}
+  .nk-tile{min-height:0;padding:11px 26px 11px 12px;gap:4px}
+  .nk-tile b{font-size:15px}
+  .nk-tile small{font-size:13px}
+  .nk-tile>.ico{right:8px;top:12px}
+  .nk-hint{margin-top:8px;font-size:13px}
+  .nk-intro{font-size:15px;margin-bottom:10px}
+  .nk-why2{grid-template-columns:1fr;gap:6px}
+  .nk-why2 li{padding:8px 12px;font-size:14.5px}
+  .nk-btns{gap:8px;margin-top:10px}
+  .nk-btns .btn{flex:1 1 0;padding:0 10px}
+  .nk-btns-3 .btn{flex:1 1 calc(50% - 4px)}
+  .nk-btns-3 .btn:last-child{flex-basis:100%}
+  .nk-list-big{font-size:15px;gap:6px;padding:12px 14px 12px 30px}
+  .nk-team{gap:8px}
+  .nk-team .nk-person{padding:10px 12px}
+  .nk-person span:not(.cic){font-size:13px}
+  #contacts .mapbox .map{display:none}
+  #contacts .mapbox{padding:0;background:none;border:0}
+  #contacts .map-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  #contacts .map-actions .btn{min-height:46px;padding:6px 8px;font-size:14px;min-width:0;white-space:normal;line-height:1.15;text-align:center}
+  #contacts .mapbox{box-shadow:none!important;min-width:0}
+  #contacts .map-actions{width:100%}
+  #contacts .map-actions .btn:first-child{grid-column:1 / -1}
+  .nk-contacts{gap:10px}
+  #contacts .cbox-info{padding:12px 14px}
+  .nk-cl{gap:8px}
+  .nk-cl li{gap:10px}
+  .nk-cl .cic{width:34px;height:34px}
+  .nk-cl b{font-size:14.5px}
+  .nk-cl .addr-note{font-size:12.5px}
+  #book .sec-scroll{padding-top:calc(var(--hdr-h) + 8px)}
+  .nk-bookwrap .cbox.form{padding:14px 16px}
+  #book .form h3{font-size:19px;margin:0}
+  #book .fdesc{font-size:13.5px;margin:4px 0 0}
+  #book .fld label{font-size:13.5px;margin-bottom:3px}
+  #book .fld input,#book .fld select{min-height:44px;padding:8px 12px}
+  #book .cbox.form .fg{gap:8px;margin-top:8px}
+  #book .f2{gap:8px}
+  #book .fnote{font-size:12.5px;margin:0}
+  #book .cbox.form .btn{min-height:48px}
+  #more .nk-extra{gap:8px}
+}
