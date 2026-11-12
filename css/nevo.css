@@ -425,3 +425,59 @@ html[data-theme="dark"] .nk-road::before{background:linear-gradient(180deg,rgba(
 @media (min-width:768px) and (max-width:991px){
   .nk-road{bottom:calc(var(--bar-h,60px) + 10px + env(safe-area-inset-bottom,0px))}
 }
+/* ================= 12.11, шестая волна: «Об автошколе» — живой фон-город (SVG + CSS, без библиотек и видео) =================
+   дороги — в свободных полосах над и под текстом (текст стоит по центру экрана), под карточки фон не заходит */
+.nk-city{position:absolute;left:0;right:0;top:var(--hdr-h);bottom:calc(var(--bar-h,60px) + env(safe-area-inset-bottom,0px));overflow:hidden;pointer-events:none;
+  --road:rgba(31,95,168,.11);--edge:rgba(255,255,255,.8);--dash:rgba(255,255,255,.95);--sky:rgba(31,95,168,.09)}
+.nkc-road{position:absolute;left:0;right:0;height:var(--rh);background:var(--road);border-top:2px solid var(--edge);border-bottom:2px solid var(--edge)}
+.nkc-r1{top:clamp(64px,12%,120px);--rh:24px}
+.nkc-r2{display:none;bottom:118px;--rh:30px}
+.nkc-r3{bottom:4px;--rh:40px}
+.nkc-sky{position:absolute;left:0;width:100%;height:clamp(40px,7vh,62px);bottom:calc(100% + 2px);background:var(--sky);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 140'%3E%3Cpath d='M0 140V96H60V80H110V96H150V70H220V96H250V86H295V140ZM300 140V92H328V74H336V62C336 42 350 28 368 25V16H366V12H374V16H372V25C390 28 404 42 404 62V74H412V92H440V140ZM445 140V84H525V96H565V76H625V96H655V90H715V140ZM720 140V96H764V60L772 56V18L776 0L780 18V56L788 60V96H832V140ZM840 140V78H910V96H960V84H1020V96H1200V140Z'/%3E%3C/svg%3E") left bottom/auto 100% repeat-x;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 140'%3E%3Cpath d='M0 140V96H60V80H110V96H150V70H220V96H250V86H295V140ZM300 140V92H328V74H336V62C336 42 350 28 368 25V16H366V12H374V16H372V25C390 28 404 42 404 62V74H412V92H440V140ZM445 140V84H525V96H565V76H625V96H655V90H715V140ZM720 140V96H764V60L772 56V18L776 0L780 18V56L788 60V96H832V140ZM840 140V78H910V96H960V84H1020V96H1200V140Z'/%3E%3C/svg%3E") left bottom/auto 100% repeat-x}
+.nkc-lane{position:absolute;left:0;right:0;top:50%;height:3px;margin-top:-1.5px;background:repeating-linear-gradient(90deg,var(--dash) 0 30px,transparent 30px 64px)}
+.nkc-tree,.nkc-tl{position:absolute;bottom:calc(100% + 2px);z-index:0}
+.nkc-tree{width:26px;height:42px}
+.nkc-r2 .nkc-tree{width:32px;height:51px}
+.nkc-r3 .nkc-tree{width:34px;height:54px}
+.nkc-tl{width:11px;height:46px}
+.nkc-r2 .nkc-tl{width:13px;height:56px}
+.nkc-r3 .nkc-tl{width:14px;height:60px}
+.nkc-tl circle{opacity:.18;animation:9s linear infinite;animation-play-state:paused}
+.nkc-tl .r{animation-name:nkcR}.nkc-tl .y{animation-name:nkcY}.nkc-tl .g{animation-name:nkcG}
+/* ближняя полоса — ниже и впереди, встречная — чуть выше, позади и бледнее */
+.nkc-v{position:absolute;left:0;z-index:2;bottom:3px;width:var(--w);height:auto;transform:translateX(-220px);
+  animation:nkcGo var(--t) linear var(--d) infinite;animation-play-state:paused;will-change:transform}
+.nkc-v.nkc-back{z-index:1;width:calc(var(--w) * .8);bottom:calc(var(--rh) * .5 + 1px);opacity:.8;animation-name:nkcBack}
+#about.active .nkc-v,#about.active .nkc-tl circle{animation-play-state:running}
+@keyframes nkcGo{from{transform:translateX(-220px)}to{transform:translateX(calc(100vw + 40px))}}
+@keyframes nkcBack{from{transform:translateX(calc(100vw + 40px)) scaleX(-1)}to{transform:translateX(-220px) scaleX(-1)}}
+@keyframes nkcR{0%,44%{opacity:1}45%,100%{opacity:.18}}
+@keyframes nkcY{0%,44%{opacity:.18}45%,54%{opacity:1}55%,89%{opacity:.18}90%,100%{opacity:1}}
+@keyframes nkcG{0%,54%{opacity:.18}55%,89%{opacity:1}90%,100%{opacity:.18}}
+html[data-theme="dark"] .nk-city{--road:rgba(91,143,204,.13);--edge:rgba(255,255,255,.16);--dash:rgba(255,255,255,.32);--sky:rgba(140,175,220,.07);opacity:.85}
+/* высокие экраны (iPad, большие мониторы): третья дорога в нижней полосе */
+@media (min-width:768px) and (min-height:940px){.nkc-r2{display:block}}
+/* телефоны: свободна только полоса под кнопками — там одна дорога, без верхней */
+@media (max-width:767px){
+  .nkc-r1,.nkc-r2{display:none}
+  .nkc-mx,.nkc-r3 .nkc-tl,.nkc-r3 .nkc-tree{display:none}
+  .nkc-r3{--rh:30px;bottom:6px}
+  .nkc-v{width:calc(var(--w) * .6)}
+  .nkc-v.nkc-back{width:calc(var(--w) * .5);bottom:calc(var(--rh) * .5 - 3px)}
+}
+@media (max-width:767px) and (max-height:700px){
+  .nkc-r3{--rh:16px;bottom:2px}
+  .nkc-r3 .nkc-tl,.nkc-r3 .nkc-tree{display:none}
+  .nkc-v{width:calc(var(--w) * .36)}
+  .nkc-v.nkc-back{width:calc(var(--w) * .3);bottom:calc(var(--rh) * .5 - 4px)}
+}
+@media (prefers-reduced-motion:reduce){.nkc-v,.nkc-tl circle{animation:none}.nkc-v{transform:translateX(30vw)}.nkc-v.nkc-back{transform:translateX(60vw) scaleX(-1)}}
+/* зазор снизу: плашка первого экрана выше края на ~3 % видимой высоты, значки нижней панели не у самого края (полоска жестов) */
+@media (pointer:coarse),(max-width:767px){
+  .sec-hero .sec-scroll{padding-bottom:calc(max(28px,calc(16px + env(safe-area-inset-bottom,0px))) + var(--vh,100vh) * .03)!important}
+}
+@media (max-width:767px){
+  .bar{padding-bottom:max(10px,calc(4px + env(safe-area-inset-bottom,0px)))}
+}
+@media (max-width:767px) and (min-height:701px){:root{--bar-h:64px}}
+@media (min-width:768px) and (max-width:991px){.nk-city{bottom:calc(var(--bar-h,60px) + 10px + env(safe-area-inset-bottom,0px))}}
