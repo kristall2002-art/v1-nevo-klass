@@ -1,0 +1,81 @@
+/* Нево-Класс: переопределения поверх эталона. Светлая дневная палитра: синий + жёлтый («учебный» знак). */
+:root{--spot:255,201,77}
+
+/* ---------- первый экран: светлое дневное фото, без видео ---------- */
+.hero-bg{background:#a9cdf0 url(../img/hero-poster.jpg) 58% 55%/cover no-repeat}
+.hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,255,255,.34) 0%,rgba(255,255,255,0) 52%)}
+.hero-plq{--plq-w:clamp(520px,calc(42*var(--vwu,1vw)),700px)}
+.hw{font-size:calc((var(--plq-w) - 2 * var(--plq-pad)) / 5.5);font-weight:600;letter-spacing:-.01em}
+.hn{font-size:clamp(20px,calc(2*var(--vwu,1vw)),28px);font-weight:500}
+html[data-theme="light"]:not([data-hc="1"]) .sec-hero{--glass:rgba(255,255,255,.78);--glass-blur:10px}
+html[data-theme="light"]:not([data-hc="1"]) .hero-plq .kicker{color:#1f5fa8}
+html[data-theme="light"]:not([data-hc="1"]) .hero-plq .kicker::before{background:#1f5fa8}
+html[data-theme="light"]:not([data-hc="1"]) .hw{color:#102f55}
+html[data-theme="light"]:not([data-hc="1"]) .hn{color:#1f5fa8}
+html[data-theme="light"]:not([data-hc="1"]) .hero-addr .addr-link:hover{color:#1f5fa8}
+.hero-lead{margin-top:14px}
+.hero-cats{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 0;padding:0;list-style:none}
+.hero-cats li{display:inline-flex;align-items:center;gap:7px;padding:7px 14px 7px 11px;border-radius:999px;background:rgba(255,255,255,.85);border:1px solid rgba(31,95,168,.28);font-weight:600;font-size:14.5px;color:#12365f;text-shadow:none}
+.hero-cats .ico{width:16px;height:16px;color:#1f5fa8}
+.hero-cta{margin-top:18px}
+.hero-cta .btn-glass{flex:1 1 auto;white-space:nowrap}
+.hero-cta .btn-glass.btn-book{box-shadow:0 8px 24px rgba(240,170,20,.35)}
+.hero-addr{margin-top:14px}
+
+/* ---------- светлая палитра остальных экранов: синий вместо коричневого ---------- */
+html[data-theme="light"]:not([data-hc="1"]) .sec:not(.sec-hero),html[data-theme="light"]:not([data-hc="1"]) .hdr,html[data-theme="light"]:not([data-hc="1"]) .bar,html[data-theme="light"]:not([data-hc="1"]) .mmenu{
+  --card:rgba(255,255,255,.82);
+  --text:#14233a; --muted:#41536b;
+  --line:rgba(22,60,110,.30); --line2:rgba(22,60,110,.16);
+  --accent:#1f5fa8; --accent-d:#174a86; --accent-l:#5b8fcc; --accent-soft:rgba(31,95,168,.12);
+  --bg:rgba(255,255,255,.6); --bg3:rgba(22,60,110,.07);
+  --shadow:0 1px 12px rgba(22,60,110,.14); --shadow-lg:0 18px 50px rgba(22,60,110,.26);
+  color:#14233a
+}
+html[data-theme="light"]:not([data-hc="1"]) .glass,
+html[data-theme="light"]:not([data-hc="1"]) .sec:not(.sec-hero) :is(.sec-head,.cbox,.foot){box-shadow:0 8px 28px rgba(22,60,110,.18),inset 0 1px 0 rgba(255,255,255,.85)}
+html[data-theme="light"]:not([data-hc="1"]) .sec:not(.sec-hero) .sec-bg::after,.sec:not(.sec-hero) .sec-bg::after{background:rgba(255,255,255,.12)}
+.sec-bg{background:#cfe0f3}
+.btn-primary{background:#ffc94d;border-color:#ffc94d;color:#2a1d07}
+.btn-primary:hover{background:#ffd06b;border-color:#ffd06b;color:#2a1d07}
+html[data-theme="light"]:not([data-hc="1"]) .hdr .btn-primary,html[data-theme="light"]:not([data-hc="1"]) .sec:not(.sec-hero) .btn-primary{color:#2a1d07}
+
+/* ---------- последний экран: компактная раскладка, чтобы всё помещалось в 800 px ---------- */
+#contacts .sec-scroll{padding-top:calc(var(--hdr-h) + 8px)}
+#contacts .sec-head{margin-bottom:12px;padding:10px 18px 10px 24px!important}
+#contacts .sec-head .h2{margin-top:2px;font-size:28px}
+#contacts .sh-cta{min-height:46px}
+.addr-note{display:block;margin-top:2px;font-size:13px;color:var(--muted)}
+.contacts{grid-template-columns:1fr 1.15fr 1fr;gap:14px}
+.contacts .cbox{padding:14px 16px}
+.cl{gap:12px}
+.map{min-height:0;height:250px;flex:none}
+.cbox.form .fg{margin-top:8px;gap:7px}
+.form h3{font-size:18px}
+.fld input,.fld select,.fld textarea{padding:7px 11px}
+.fld-hid{display:none}
+.foot{margin-top:12px;padding:10px 18px}
+.foot p{margin:0}
+.foot p + p{margin-top:4px}
+.foot-owner{font-weight:600}
+.foot-owner a{text-decoration:underline;text-underline-offset:3px}
+html[data-theme="light"]:not([data-hc="1"]) .foot a{color:#174a86}
+
+/* ---------- добивка: коричневые акценты эталона -> синие ---------- */
+html[data-theme="light"]:not([data-hc="1"]) .sec:not(.sec-hero) .kicker{color:#1f5fa8}
+html[data-theme="light"]:not([data-hc="1"]) .sec:not(.sec-hero) .kicker::before{background:#1f5fa8}
+html[data-theme="light"]:not([data-hc="1"]) .cl .cic{background:rgba(31,95,168,.13);color:#1f5fa8}
+html[data-theme="light"]:not([data-hc="1"]) .hdr-tel:hover,html[data-theme="light"]:not([data-hc="1"]) .bi.cur{color:#1f5fa8}
+html[data-theme="light"]:not([data-hc="1"]) .sec:not(.sec-hero) .btn-ghost:hover{border-color:#1f5fa8;color:#174a86}
+html[data-theme="light"]:not([data-hc="1"]) .nav-a.cur,html[data-theme="light"]:not([data-hc="1"]) .nav-a[aria-current]{color:#14233a}
+.hero-addr .addr-link{border-bottom:0;padding:0;margin:0;display:inline-flex}
+.hero-addr .addr-link:hover{text-decoration:underline}
+.cl .addr-link{display:inline;border-bottom:0;padding:0;margin:0;text-decoration:underline;text-decoration-color:rgba(31,95,168,.45);text-underline-offset:3px}
+.cl .addr-link:hover{color:#1f5fa8}
+.map{flex:1 1 auto;min-height:250px;height:auto}
+.hw{font-size:calc((var(--plq-w) - 2 * var(--plq-pad)) / 5.9)}
+html[data-theme="light"]:not([data-hc="1"]) .foot{color:#22344d}
+.cl .cat-line{font-weight:500}
+
+/* карта Яндекса в узкой колонке рисует снизу «шторку» с карточкой места: обрезаем её, подпись «© Яндекс» остаётся */
+.map iframe{height:calc(100% + 78px)}

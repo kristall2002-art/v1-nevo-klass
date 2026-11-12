@@ -1,0 +1,775 @@
+/* ==========================================================================
+   Эталон нотариуса. Общий слой поверх встроенных стилей index.html:
+   видео-первый экран, «жидкое стекло», интерьеры на фоне экранов,
+   шапка и нижняя панель со второго экрана, карточки Spotlight Card.
+   ========================================================================== */
+
+/* плавное проявление подсветки рамки (Chrome/Safari/Firefox новых версий) */
+@property --hl{syntax:'<number>';inherits:true;initial-value:0}
+
+:root{
+  --glass:rgba(0,0,0,.4);
+  --glass-blur:4px;
+  --spot:255,196,108;          /* тёплый янтарь под интерьеры */
+  --spring:cubic-bezier(.2,.9,.3,1.35);
+}
+
+/* ---------- светлый текст на тёмном стекле для всего, что лежит на фото ---------- */
+.sec:not(.sec-hero),.hdr,.bar,.mmenu{
+  --card:rgba(0,0,0,.4); --card-rgb:0,0,0;
+  --text:#fff; --muted:rgba(255,255,255,.84);
+  --line:rgba(255,255,255,.3); --line2:rgba(255,255,255,.2);
+  --accent:#ecd9ac; --accent-d:#f6e9c8; --accent-l:#d3bc8a; --accent-soft:rgba(255,255,255,.13);
+  --bg:rgba(0,0,0,.3); --bg2:transparent; --bg3:rgba(255,255,255,.13);
+  --on-accent:#1d170b;
+  --shadow:0 1px 12px rgba(0,0,0,.35); --shadow-lg:0 18px 50px rgba(0,0,0,.5);
+  --ok:#8fe3a8; --bad:#ff9f96;
+  color:#fff;
+}
+.sec:not(.sec-hero){background:#2b2319}
+.sec:not(.sec-hero) .sec-scroll{
+  position:relative;z-index:1;
+  padding-top:calc(var(--hdr-h) / var(--zc,1) + 12px);padding-bottom:calc(var(--bar-h) + 12px);
+  text-shadow:0 1px 2px rgba(0,0,0,.45)
+}
+.sec:not(.sec-hero) :is(input,select,textarea,button.btn,.btn){text-shadow:none}
+
+/* ---------- фон экранов: интерьеры, затемнение ровно 50% ---------- */
+.sec-bg{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:#2b2319}
+.sec-bg picture{display:block;width:100%;height:100%}
+.sec-bg img{display:block;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .9s ease}
+.sec-bg img.ld,html:not(.js) .sec-bg img{opacity:1}
+.sec-bg::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.5)}
+
+/* ==========================================================================
+   Жидкое стекло
+   ========================================================================== */
+.glass,
+.sec:not(.sec-hero) :is(.sec-head,.svc,.step,.rev,.rsum,.cred,.cbox,.fq,.about-txt,.tf-card,.quote,.ilink,.chips li,.foot,.rate-chip){
+  position:relative;isolation:isolate;
+  background:var(--glass);
+  -webkit-backdrop-filter:blur(var(--glass-blur));backdrop-filter:blur(var(--glass-blur));
+  border:0;border-radius:var(--radius);
+  box-shadow:0 8px 30px rgba(0,0,0,.14);
+}
+/* тонкая светлая рамка-градиент; рядом с курсором рамка разгорается (--hl, --x, --y) */
+.glass::after,
+.sec:not(.sec-hero) :is(.sec-head,.svc,.step,.rev,.rsum,.cred,.cbox,.fq,.about-txt,.tf-card,.quote,.ilink,.chips li,.foot,.rate-chip)::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;padding:1.4px;pointer-events:none;z-index:2;
+  background:
+    radial-gradient(230px circle at var(--x,50%) var(--y,50%),rgba(255,226,160,calc(var(--hl,0)*1)),rgba(var(--spot),calc(var(--hl,0)*.65)) 38%,transparent 72%),
+    linear-gradient(160deg,rgba(255,255,255,.58) 0%,rgba(255,255,255,.16) 22%,rgba(255,255,255,0) 44%,rgba(255,255,255,0) 60%,rgba(255,255,255,.16) 82%,rgba(255,255,255,.5) 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+}
+.sec:not(.sec-hero) .sec-head{display:block;width:fit-content;max-width:100%;border-radius:18px;padding:14px 22px 16px;margin-bottom:16px}
+.sec:not(.sec-hero) .sec-head .h2{margin-top:8px}
+.sec:not(.sec-hero) .sec-head .lead{margin-top:8px}
+.sec:not(.sec-hero) .sec-head .demo-note{background:rgba(255,255,255,.1);border-left-color:var(--accent)}
+
+/* ==========================================================================
+   Spotlight Card: пятно света под курсором внутри карточки (::before),
+   подсветка рамки рядом с курсором (::after выше), «прыжок» scale + тень.
+   Позицию --x/--y ставит один общий обработчик pointermove (js/etalon.js).
+   ========================================================================== */
+.glow{position:relative;isolation:isolate;--hov:1.035}
+.glow::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-1;
+  background:
+    radial-gradient(340px circle at var(--x,50%) var(--y,50%),rgba(var(--spot),.5),rgba(var(--spot),.2) 38%,transparent 72%);
+  opacity:0;transition:opacity .35s ease;
+}
+.glow.lit{--hl:1}
+.glow.lit::before{opacity:1}
+.glow{transition:scale .38s var(--spring),box-shadow .32s ease,--hl .3s ease}
+.glow.rv{transition:opacity .7s ease var(--rvd),translate .7s ease var(--rvd),scale .38s var(--spring),box-shadow .32s ease,--hl .3s ease}
+@media (hover:hover) and (pointer:fine){
+  .glow:hover{scale:var(--hov);z-index:6;box-shadow:0 24px 54px rgba(0,0,0,.5),0 0 34px rgba(var(--spot),.2)}
+}
+/* ---------- «Контакты» («Как нас найти»): плашки при наведении и касании загораются жёлтым — яркая рамка и мягкое
+   свечение вокруг; размер не меняется (никаких увеличений и сдвигов раскладки), видно в обеих темах ---------- */
+:root{--gy-ring:255,208,80;--gy-glow:255,200,64}
+html[data-theme="light"]{--gy-ring:232,154,0;--gy-glow:255,186,30}
+#contacts .glow{--gy:0 0 0 2.5px rgba(var(--gy-ring),.98),0 0 22px 4px rgba(var(--gy-glow),.66),0 0 58px 14px rgba(var(--gy-glow),.32),0 8px 30px rgba(0,0,0,.14);
+  --gy0:0 0 0 0 rgba(var(--gy-ring),0),0 0 0 0 rgba(var(--gy-glow),0),0 0 0 0 rgba(var(--gy-glow),0),0 8px 30px rgba(0,0,0,.14)}
+@media (hover:hover) and (pointer:fine){
+  #contacts .glow:hover{scale:1;box-shadow:var(--gy)}
+  /* заголовок с рейтингом: когда курсор на значке рейтинга, светится только значок */
+  #contacts .sec-head:has(.rate-chip:hover):hover{box-shadow:var(--gy0)}
+}
+#contacts .glow.tap{animation:cGlowTap 1.4s ease-out,glowHl .62s ease-out}
+@keyframes cGlowTap{0%{box-shadow:var(--gy0)}14%,62%{box-shadow:var(--gy)}100%{box-shadow:var(--gy0)}}
+html[data-hc="1"] #contacts .glow:hover{outline:3px solid #ffd400;outline-offset:2px}
+/* крупные плашки берут нижнюю границу 1,03: 3,5 % от 600 px — это уже 20 px */
+.hero-plq,.about-txt,.tf-card,.sec-head,.cbox{--hov:1.03}
+
+/* касание на телефоне: вспышка пятна в точке касания и подпрыгивание */
+.glow.tap{animation:glowTap .62s var(--spring),glowHl .62s ease-out}
+.glow.tap::before{animation:spotFlash .62s ease-out}
+@keyframes glowTap{0%{scale:1}38%{scale:var(--tap,1.045)}100%{scale:1}}
+@keyframes glowHl{0%{--hl:0}22%{--hl:1}100%{--hl:0}}
+@keyframes spotFlash{0%{opacity:0}18%{opacity:1}100%{opacity:0}}
+
+/* ---------- появление блоков при входе на экран ---------- */
+.rv{--rvd:calc(var(--i,0) * 90ms);opacity:0;transform:none;translate:0 18px;
+  transition:opacity .7s ease var(--rvd),translate .7s ease var(--rvd)}
+.sec.active .rv{opacity:1;transform:none;translate:0 0}
+/* первый экран: блоки стартуют сами (экран активен с загрузки), по очереди после слова */
+.sec-hero .rv{--rvd:calc(var(--hero-d,1.8s) + var(--i,0) * 140ms);opacity:1;translate:0 0}
+.sec-hero .kicker.rv{--rvd:.45s}
+/* анимация заголовка стартует — скрипт ставит .go, и остальные блоки выходят следом за словом */
+.sec-hero.go .rv{animation:heroIn .9s cubic-bezier(.2,.7,.2,1) var(--rvd) both}
+html.js .sec-hero:not(.go) .rv{opacity:0;translate:0 18px;animation:heroSafe .01s linear 5s forwards}
+@keyframes heroIn{from{opacity:0;translate:0 18px}to{opacity:1;translate:0 0}}
+@keyframes heroSafe{to{opacity:1;translate:0 0}}
+
+/* ==========================================================================
+   Первый экран
+   ========================================================================== */
+.sec-hero{background:#8fb1d4;color:#fff;
+  /* А−/А+ первый экран не трогают: страница в zoom, экран — встречный zoom (как шапка), поэтому он на любой ступени
+     выглядит ровно как при 100 %. Единицы vw/vh и высота экрана считаются от окна без поправки. */
+  zoom:calc(1 / var(--zc,1)); --vwu:1vw; --vhu:1vh; --vh:calc(100 * var(--vhu))}
+.hero-bg{position:absolute;inset:0;overflow:hidden;background:#9db9d6 url(../img/hero-poster.jpg) 54% 50%/cover no-repeat}
+.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:54% 50%;background:transparent}
+.hero-clouds{
+  position:absolute;left:0;top:0;width:100%;height:58%;pointer-events:none;opacity:0;transition:opacity 2.4s ease;
+  -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 36%,rgba(0,0,0,.55) 66%,transparent 100%);
+          mask-image:linear-gradient(180deg,#000 0%,#000 36%,rgba(0,0,0,.55) 66%,transparent 100%)
+}
+.hero-clouds.on{opacity:1}
+/* угасание к низу рисует сам шейдер (js/clouds.js): маска на canvas — лишний проход на каждый кадр */
+.hero-clouds.baked{-webkit-mask-image:none;mask-image:none}
+/* точки-переходы по краю не растут с А+: иначе на ступенях 130–150 % они наезжают на плашки первого экрана и карточки */
+.dots{zoom:calc(1 / var(--zc,1))}
+
+.sec-hero .sec-scroll{position:relative;z-index:1;padding:26px clamp(20px,calc(3.4*var(--vwu,1vw)),64px);display:flex;flex-direction:column}
+.sec-hero .wrap{max-width:none;margin:auto 0}
+.hero-plq{
+  --plq-w:clamp(500px,calc(38*var(--vwu,1vw)),660px);--plq-pad:clamp(24px,calc(2.4*var(--vwu,1vw)),36px);
+  width:min(100%,var(--plq-w));padding:var(--plq-pad);border-radius:28px;
+  color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.5);
+  animation:plqIn .9s ease both
+}
+@keyframes plqIn{from{opacity:0;translate:0 14px}to{opacity:1;translate:0 0}}
+.hero-plq .kicker{color:#f6e6bd;font-size:12.5px;letter-spacing:.15em}
+.hero-plq .kicker::before{background:#f6e6bd}
+.hero-h1{margin:14px 0 0;font-weight:500}
+.hw{
+  display:inline-block;font-family:var(--serif);font-weight:500;line-height:1.06;letter-spacing:-.005em;color:#fff;
+  font-size:calc((var(--plq-w) - 2 * var(--plq-pad)) / 4.9);
+  text-shadow:0 2px 22px rgba(0,0,0,.35),0 1px 2px rgba(0,0,0,.4);white-space:nowrap
+}
+.hn{display:block;margin-top:6px;font-family:var(--serif);font-weight:500;font-size:clamp(20px,calc(1.9*var(--vwu,1vw)),28px);line-height:1.2;color:#f7ecd2}
+.hero-lead{margin-top:16px;max-width:none;font-size:clamp(15px,calc(1.15*var(--vwu,1vw)),17px);line-height:1.5;color:rgba(255,255,255,.94)}
+.hero-addr{margin-top:10px;font-size:14px}
+.hero-addr .addr-link{color:#fff;border-bottom-color:rgba(255,255,255,.55)}
+.hero-addr .addr-link:hover{color:#f6e6bd}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}
+.btn-glass{
+  min-height:52px;padding:0 26px;font-size:16px;color:#fff;border:0;background:var(--glass);
+  -webkit-backdrop-filter:blur(var(--glass-blur));backdrop-filter:blur(var(--glass-blur));text-shadow:none
+}
+.btn-glass:hover{background:var(--glass);color:#fff}
+.btn-glass.btn-book{background:rgba(var(--spot),.9);color:#2a1d07;font-weight:700;box-shadow:0 8px 26px rgba(var(--spot),.3)}
+.btn-glass.btn-book:hover{background:rgba(var(--spot),.95);color:#2a1d07}
+.btn-glass.btn-book::after{display:none}
+.btn-glass.btn-book::before{background:radial-gradient(160px circle at var(--x,50%) var(--y,50%),rgba(255,255,255,.75),rgba(255,255,255,.25) 45%,transparent 75%)}
+.btn-glass .ico{width:19px;height:19px}
+.hero-plq .status{margin-top:16px;background:rgba(0,0,0,.28);border-color:rgba(255,255,255,.3);text-shadow:none}
+
+/* ==========================================================================
+   Шапка и нижняя панель: только со второго экрана
+   ========================================================================== */
+.hdr{
+  background:var(--glass);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:0;
+  transition:transform .5s var(--ease),opacity .35s ease,visibility 0s linear 0s
+}
+.hdr::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent)}
+body[data-sec="0"] .hdr{transform:translateY(-105%);opacity:0;visibility:hidden;pointer-events:none;transition:transform .45s var(--ease),opacity .3s ease,visibility 0s linear .45s}
+.hdr-in{max-width:1440px;padding:0 28px;gap:18px}
+.brand-s{color:rgba(255,255,255,.78)}
+.brand-n{font-size:16px;font-weight:600;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.4)}
+.nav{gap:2px}
+.nav-a{color:#fff;opacity:.9;font-size:14.5px;padding:10px 12px;white-space:nowrap}
+.brand{flex:none}
+.nav-a:hover,.nav-a.cur,.nav > li.open > .nav-a{background:rgba(255,255,255,.14);opacity:1}
+.nav-a.cur{box-shadow:inset 0 -2px 0 rgba(var(--spot),.95)}
+.hdr-tools{margin-left:10px;gap:10px}
+.hdr .tool{color:#fff;opacity:.9}
+.hdr .tool:hover{background:rgba(255,255,255,.14);opacity:1}
+.hdr .btn-primary{background:rgba(var(--spot),.95);border-color:transparent;color:#2a1d07;font-weight:700}
+.hdr .btn-primary:hover{background:#ffd998;color:#2a1d07}
+.hdr-tel{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 6px;font-weight:600;font-size:15px;white-space:nowrap;color:#fff;border-radius:10px}
+.hdr-tel .ico{width:18px;height:18px}
+.hdr-tel:hover{color:#ffe2a8}
+.mega{background:rgba(24,19,12,.9);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.2)}
+.mega-it:hover{background:rgba(255,255,255,.12)}
+.lang-dd{background:rgba(24,19,12,.92);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.22);color:#fff}
+.lang-dd a:hover,.lang-dd button:hover{background:rgba(255,255,255,.12)}
+.lang-dd a.cur{color:#ffe2a8}
+/* размер текста, контраст, тема: прямо на плашке, рядом с языком */
+.hdr-a11y{display:flex;align-items:center;gap:2px;margin-left:2px;padding-left:8px;border-left:1px solid rgba(255,255,255,.28)}
+.hdr-a11y .tool{width:44px;height:44px}
+.hdr #hcBtn[aria-pressed="true"]{background:rgba(255,226,168,.2);color:#ffe2a8;opacity:1}
+.hdr .tool:disabled{opacity:.35;cursor:default}
+.hdr .tool:disabled:hover{background:none}
+.mm-tools{display:none}
+
+.bar{
+  background:var(--glass);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-top:0;box-shadow:none;
+  transition:transform .5s var(--ease),opacity .35s ease,visibility 0s linear 0s
+}
+.bar::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent)}
+body[data-sec="0"] .bar{transform:translateY(105%);opacity:0;visibility:hidden;pointer-events:none;transition:transform .45s var(--ease),opacity .3s ease,visibility 0s linear .45s}
+.bi{color:#fff;opacity:.88}
+.bi:hover{background:rgba(255,255,255,.14);opacity:1}
+.bi.cur{color:#ffe2a8}
+
+.dots button::after{background:#fff;opacity:.6;box-shadow:0 0 0 1px rgba(0,0,0,.35)}
+.dots button.cur::after{background:rgb(var(--spot));opacity:1}
+
+.mmenu{background:rgba(22,17,11,.93);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);color:#fff;bottom:var(--bar-h)}
+.mmenu .macc-list button:hover{background:rgba(255,255,255,.12)}
+.mmenu .mmenu-foot .btn{justify-content:center;padding:0 22px;font-size:16px}
+.mmenu .btn-primary{background:rgba(var(--spot),.95);border-color:transparent;color:#2a1d07;font-weight:700}
+.mmenu .btn-ghost{border-color:rgba(255,255,255,.4);color:#fff}
+.mm-set{margin-top:16px;display:grid;gap:10px}
+.mm-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.mm-lbl{width:56px;font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.mmenu .mm-row a,.mmenu .mm-row button{display:inline-flex;width:auto;min-width:44px;min-height:44px;padding:0 12px;justify-content:center;align-items:center;
+  border:1px solid rgba(255,255,255,.28);border-radius:10px;font-size:14px;font-weight:600}
+.mmenu .mm-row a.cur{color:#ffe2a8;border-color:#ffe2a8}
+.mmenu .mm-row .ico{width:20px;height:20px}
+/* на телефоне те же четыре кнопки одним заметным рядом в меню */
+.mmenu .mm-tools{grid-template-columns:repeat(4,1fr);gap:8px;padding:10px;border:1px solid rgba(255,226,168,.4);border-radius:14px;background:rgba(255,255,255,.07)}
+.mmenu .mm-tools button{display:inline-flex;width:100%;min-height:52px;justify-content:center;align-items:center;border:1px solid rgba(255,255,255,.28);border-radius:10px;font-size:16px;font-weight:700;background:rgba(0,0,0,.25);padding:0}
+.mmenu .mm-tools button .ico{width:22px;height:22px}
+.mmenu .mm-tools button[aria-pressed="true"]{border-color:#ffe2a8;color:#ffe2a8;background:rgba(255,226,168,.14)}
+.mmenu .mm-tools button:disabled{opacity:.4}
+
+/* ==========================================================================
+   Экраны: карточки на стекле
+   ========================================================================== */
+.sec:not(.sec-hero) .kicker{color:#f1deb0}
+.sec:not(.sec-hero) .kicker::before{background:#f1deb0}
+.sec:not(.sec-hero) .h2{font-size:clamp(26px,calc(3*var(--vwu,1vw)),38px)}
+.sec:not(.sec-hero) .svc:hover{transform:none;border-color:transparent}
+.svc .cic,.cred .cic,.cl .cic,.mega-it .cic{background:rgba(255,255,255,.14);color:#f6e9c8}
+.svc small{color:rgba(255,255,255,.8)}
+.about-txt{padding:20px 24px}
+.sec:not(.sec-hero) .about-txt .quote{background:rgba(255,255,255,.09);border-left:3px solid rgb(var(--spot));border-radius:0 12px 12px 0;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}
+.sec:not(.sec-hero) .about-txt .quote::after{display:none}
+.chips li{background:var(--glass);border-radius:999px}
+.creds .cred{padding:14px 16px;min-height:68px}
+.cred > div{min-width:0;flex:1 1 auto}
+
+/* ---------- «Оплата»: ровные значки ----------
+   Карточка занимает ту же ширину и высоту, что соседние. Если четыре значка помещаются в строку —
+   идут одним рядом от левого до правого края; иначе сетка 2×2 с одинаковыми колонками, а все карточки
+   «Реквизитов» выравниваются по высоте (grid-auto-rows:1fr). Размер решает ширина самой колонки
+   (container query), а не окна — поэтому одинаково на 1280, 1366, 1440, 1920, планшете и в режиме «А+». */
+.about-side{container:aside / inline-size}
+.pay-pills,.cred .pay-pills,.cl .pay-pills{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;width:100%;margin-top:3px
+}
+.pay-pill{
+  display:flex;align-items:center;justify-content:center;min-width:0;min-height:26px;padding:2px 8px;
+  font-size:12.5px;line-height:1.2;text-align:center;white-space:nowrap;box-sizing:border-box
+}
+.pay-pill .ico{display:none}
+.pay-pill.pay-logo{padding:2px 8px;min-height:26px}
+.pay-pill.pay-logo img{height:15px}
+.pay-pill.pay-logo img[src$="sbp.svg"]{height:17px}
+.creds .cred:has(.pay-pills){padding-top:10px;padding-bottom:10px}
+.creds .cred:has(.pay-pills) small{line-height:1.25}
+@container aside (min-width:405px){
+  .cred .pay-pills{grid-template-columns:repeat(4,auto);justify-content:space-between;max-width:430px}
+}
+@container aside (max-width:404px){
+  .creds{grid-auto-rows:1fr}
+}
+
+.steps::before{display:none}
+.steps{gap:14px;list-style:none;padding:0}
+.step{padding:20px 16px 20px;text-align:left}
+.step-n{background:rgba(255,255,255,.14);border-color:rgba(var(--spot),.85);color:#f6e9c8}
+.step p{color:rgba(255,255,255,.88)}
+
+.rsum,.rev{padding:20px 22px}
+.rsum .big{color:#f6e9c8}
+.rev p{color:#fff}
+
+.faq{gap:0 16px}
+.faq-col{gap:12px}
+.fq{border-bottom:0;padding:2px 18px}
+.fq > button{padding:14px 2px}
+.fq-a p{padding:0 2px 14px;color:rgba(255,255,255,.88)}
+.fq > button .pl{border-color:rgba(255,255,255,.4)}
+
+.cbox{padding:16px 18px}
+.cl{gap:9px}
+.mapbox{padding:12px}
+.fld input,.fld select,.fld textarea{background:rgba(0,0,0,.34);color:#fff;border-color:rgba(255,255,255,.34);text-shadow:none}
+.fld input::placeholder,.fld textarea::placeholder{color:rgba(255,255,255,.55)}
+.fld select option{color:#111;background:#fff}
+.fld input:focus,.fld select:focus,.fld textarea:focus{border-color:rgb(var(--spot));box-shadow:0 0 0 3px rgba(var(--spot),.28)}
+.map{background:rgba(0,0,0,.25)}
+.sec:not(.sec-hero) .btn-primary{background:rgba(var(--spot),.95);border-color:transparent;color:#2a1d07;font-weight:700}
+.sec:not(.sec-hero) .btn-primary:hover{background:#ffd998;color:#2a1d07}
+.sec:not(.sec-hero) .btn-ghost{background:rgba(0,0,0,.3);color:#fff;border-color:rgba(255,255,255,.4)}
+.sec:not(.sec-hero) .btn-ghost:hover{border-color:rgb(var(--spot));color:#ffe2a8}
+.info-links .ilink{color:#fff;padding:9px 18px}
+.info-links .ilink:hover{background:var(--glass)}
+
+/* рейтинг Яндекс.Карт в «Контактах» */
+.sec-head-rate{display:flex!important;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;width:100%!important;padding:14px 18px 14px 24px!important}
+.sec-head-rate .sh-txt .h2{margin-top:6px}
+.rate-chip{display:flex;align-items:center;gap:12px;padding:8px 18px 8px 10px;border-radius:14px;color:#fff;text-decoration:none;text-shadow:none}
+.rate-chip .ym{width:40px;height:40px;flex:none}
+.rate-chip .badge-r{display:flex;align-items:center;gap:8px}
+.rate-chip .badge-r b{font-size:26px;line-height:1;font-weight:600}
+.rate-chip .stars svg{width:17px;height:17px}
+.rate-chip small{display:block;margin-top:3px;font-size:13px;color:var(--muted);white-space:nowrap}
+
+.foot{margin-top:16px;padding:12px 18px;border-top:0;border-radius:14px;align-items:center}
+.foot > div:first-child{flex:1 1 0;min-width:0}
+.foot a{color:#fff}
+
+/* фокус с клавиатуры виден на любом фоне */
+.sec :focus-visible,.hdr :focus-visible,.bar :focus-visible,.mmenu :focus-visible{outline:3px solid #ffe2a8;outline-offset:2px}
+
+/* ==========================================================================
+   Адаптив
+   ========================================================================== */
+@media screen and (max-width:1439px){
+  .hdr-tel{width:44px;padding:0;justify-content:center}
+  .hdr-tel span{display:none}
+  .hdr-tel:hover{background:rgba(255,255,255,.14)}
+  .nav-a{padding:10px 9px}
+}
+/* на ноутбуках поуже телефон на плашке не помещается (он есть в нижней панели и в меню) */
+@media screen and (max-width:1366px){.hdr-tel{display:none}}
+@media screen and (max-width:860px){
+  .hdr-a11y{display:none}
+}
+@media (max-width:860px){
+  .mmenu .mm-tools{display:grid}
+}
+/* таджикская и киргизская версии: пункты меню длиннее — телефон на плашке только значком до 1680 px, меню-бургер на экранах до 1320 px */
+@media screen and (min-width:1440px) and (max-width:1679px){
+  html[lang="tg"] .hdr-tel,html[lang="ky"] .hdr-tel{width:44px;padding:0;justify-content:center}
+  html[lang="tg"] .hdr-tel span,html[lang="ky"] .hdr-tel span{display:none}
+}
+@media screen and (min-width:1280px) and (max-width:1319px){
+  html[lang="tg"] .nav,html[lang="ky"] .nav,html[lang="tg"] .hdr-tel,html[lang="ky"] .hdr-tel{display:none}
+  html[lang="tg"] .burger,html[lang="ky"] .burger{display:grid}
+  html[lang="tg"] .hdr-book,html[lang="ky"] .hdr-book{display:inline-flex}
+  html[lang="tg"] .hdr-tools,html[lang="ky"] .hdr-tools{margin-left:auto}
+  html[lang="tg"] .hdr-in,html[lang="ky"] .hdr-in{padding:0 18px}
+}
+@media screen and (max-width:1279px){
+  .nav,.hdr-tel{display:none}
+  .burger{display:grid}
+  .hdr-book{display:inline-flex}
+  .hdr-tools{margin-left:auto}
+  .hdr-in{padding:0 18px}
+}
+@media (max-width:767px){
+  .sec-bg{background:#2b2319}
+  .sec:not(.sec-hero) .sec-scroll{padding-bottom:calc(var(--bar-h) + 12px)}
+  .sec:not(.sec-hero) .sec-head{padding:12px 16px 14px;margin-bottom:14px;border-radius:14px}
+  .step{padding:14px}
+  .fq{padding:0 14px}
+  .rsum,.rev{padding:16px}
+  .sec-head-rate{padding:12px 14px!important}
+  .rate-chip{padding:6px 12px 6px 8px}
+  .rate-chip .ym{width:34px;height:34px}
+  .rate-chip .badge-r b{font-size:22px}
+  .rate-chip .stars svg{width:14px;height:14px}
+  .foot{padding:10px 14px}
+}
+/* первый экран: пороги настоящие (@media screen не пересчитывается под А+), он всегда как при 100 % */
+@media screen and (max-width:767px){
+  .sec-hero .sec-scroll{padding:16px 14px calc(18px + env(safe-area-inset-bottom,0px))}
+  .sec-hero .wrap{margin:auto 0 0}
+  .hero-plq{--plq-pad:18px;width:100%;padding:18px 18px 20px;border-radius:22px}
+  .hero-plq .kicker{font-size:11.5px;letter-spacing:.1em}
+  .hero-h1{margin-top:10px}
+  .hw{font-size:clamp(44px,calc(16.2*var(--vwu,1vw)),76px)}
+  .hn{font-size:clamp(19px,calc(5.4*var(--vwu,1vw)),26px)}
+  .hero-lead{margin-top:12px;font-size:14.5px}
+  .hero-addr{display:none}
+  .hero-cta{margin-top:16px;gap:10px;flex-wrap:nowrap}
+  .btn-glass{min-height:50px;padding:0 14px;font-size:15px;flex:1 1 0;gap:8px}
+  .hero-plq .status{margin-top:12px;font-size:12.5px}
+  .hero-video,.hero-bg{object-position:55% 50%;background-position:55% 50%}
+  .hero-clouds{height:52%}
+}
+@media (max-width:767px){
+  .dots{right:-15px}
+}
+@media screen and (max-width:600px){
+  .hdr-in{padding:0 12px;gap:8px}
+  .brand-n{font-size:15px}
+  .hdr-book{padding:0 14px;font-size:14px}
+}
+/* ---------- очень узкая раскладка: телефон при увеличенном тексте (ширина окна ÷ масштаб ≤ 340) ----------
+   Пороги @media при «А+» пересчитываются движком под масштаб, поэтому эти правила включаются и на узких
+   телефонах без увеличения, и на обычных телефонах при 115–150 %: ничего не вылезает за край, без горизонтальной прокрутки. */
+@media screen and (max-width:340px){
+  .hdr-in{padding:0 8px;gap:4px}
+  .hdr-book{display:none}
+  .brand-n{font-size:12px}
+  .tool-lang{padding:0 6px}
+}
+@media (max-width:340px){
+  .bi{padding:8px 0}
+  .bi span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .svc-grid{grid-template-columns:1fr}
+  .btn:not(.btn-glass),.btn-sm:not(.btn-glass){white-space:normal;line-height:1.2;padding-top:9px;padding-bottom:9px;text-align:center}
+  .rate-chip small{white-space:normal}
+  .rsum .btn{width:100%}
+  .foot .fl{display:flex;flex-wrap:wrap}
+  .modal{padding:10px}
+  .mbox{padding:18px 14px 14px}
+  .mbox h3{font-size:18px;overflow-wrap:anywhere}
+  .mhead{gap:10px}
+  .mhead .cic{display:none}
+  .mbox h3{overflow-wrap:break-word}
+  .hours-t{font-size:14px}
+  .hours-t td{padding:9px 3px}
+  .info-tabs button{padding:7px 10px}
+  .bk-inline{grid-template-columns:1fr}
+  .bk-inline .bk-opt{flex-direction:row;justify-content:flex-start;gap:12px;min-height:52px;padding:8px 14px;text-align:left}
+}
+/* первый экран при ширине ≤340 px: настоящие пороги (см. выше), как при 100 % */
+@media screen and (max-width:340px){
+  .hero-cta{flex-wrap:wrap}
+  .btn-glass{flex:1 1 100%;white-space:normal;line-height:1.2;padding-top:9px;padding-bottom:9px;text-align:center}
+}
+/* колонки сеток не растягиваются под длинное слово или поле ввода: страница никогда не выходит за край */
+.svc-grid>*,.steps>*,.reviews>*,.faq>*,.contacts>*,.about>*,.mbox{min-width:0}
+@media screen and (max-width:479px){
+  :root{--hdr-h:56px}
+  .brand-t{display:flex}
+  .brand{flex:1 1 0;min-width:0}
+  .brand-s{font-size:9px;letter-spacing:.14em}
+  .brand-n{font-size:12.5px;white-space:normal;line-height:1.12}
+}
+@media (max-width:479px){
+  .bi{font-size:12px;letter-spacing:-.03em;padding:6px 0}
+  .bi span{overflow:visible;text-overflow:clip}
+  .mmenu .mmenu-foot .btn{flex:1 1 100%}
+}
+@media screen and (max-height:700px) and (min-width:768px){
+  .hero-lead{display:none}
+  .hero-cta{margin-top:16px}
+}
+
+/* ---------- без анимаций, если пользователь так просит ---------- */
+@media (prefers-reduced-motion:reduce){
+  .sec-hero.go .rv,html.js .sec-hero:not(.go) .rv,.hero-plq{animation:none;opacity:1;translate:0 0}
+  .glow,.glow.rv{transition:none}
+  .rv{transition:none;translate:0 0;opacity:1}
+  .hero-clouds{transition:none}
+}
+
+/* ==========================================================================
+   Две темы (кнопка солнце/луна на плашке). По умолчанию data-theme="light" (как и было).
+   Светлая: светлое матовое стекло плашек, окна и формы светлые, текст тёмный; фон экранов — те же фото
+   с тем же затемнением 50 %, что и в тёмной базе. Тёмная: глубокий почти чёрный фон, плотное тёмное стекло,
+   светлый текст, фото сильно затемнены. Первый экран (видео, облака, чайки, слово) читается в обеих:
+   в светлой плашка светлая с тёмным текстом, в тёмной — тёмная со светлым.
+   Выше (без data-theme) — базовый вид «тёмное стекло»; светлая тема переопределяет его ниже.
+   ========================================================================== */
+/* ----- тёмная: глубже ----- */
+html[data-theme="dark"]{--glass:rgba(9,9,12,.74);--glass-blur:6px}
+html[data-theme="dark"] .sec-hero{--glass:rgba(6,7,10,.52);--glass-blur:6px}
+html[data-theme="dark"] .sec:not(.sec-hero),html[data-theme="dark"] .sec-bg{background:#070707}
+html[data-theme="dark"] .sec-bg::after{background:rgba(3,4,7,.86)}
+html[data-theme="dark"] .hdr,html[data-theme="dark"] .bar{background:rgba(5,5,7,.86)}
+html[data-theme="dark"] .mmenu{background:rgba(6,6,8,.98)}
+html[data-theme="dark"] .mega,html[data-theme="dark"] .lang-dd{background:rgba(7,7,9,.97)}
+html[data-theme="dark"] .fld input,html[data-theme="dark"] .fld select,html[data-theme="dark"] .fld textarea{background:rgba(0,0,0,.55)}
+
+/* ----- светлая ----- */
+html[data-theme="light"]:not([data-hc="1"]){--glass:rgba(255,255,255,.7);--glass-blur:8px}
+html[data-theme="light"]:not([data-hc="1"]) .sec-hero{--glass:rgba(255,253,248,.66);--glass-blur:12px}
+html[data-theme="light"]:not([data-hc="1"]) .sec:not(.sec-hero),html[data-theme="light"]:not([data-hc="1"]) .hdr,html[data-theme="light"]:not([data-hc="1"]) .bar,html[data-theme="light"]:not([data-hc="1"]) .mmenu{
+  --card:rgba(255,255,255,.74); --card-rgb:255,255,255;
+  --text:#1b160e; --muted:#4d4332;
+  --line:rgba(70,50,15,.30); --line2:rgba(70,50,15,.17);
+  --accent:#7a5718; --accent-d:#5a3d0b; --accent-l:#a3813f; --accent-soft:rgba(122,87,24,.13);
+  --bg:rgba(255,255,255,.5); --bg2:transparent; --bg3:rgba(70,50,15,.08);
+  --on-accent:#fff;
+  --shadow:0 1px 12px rgba(70,50,15,.14); --shadow-lg:0 18px 50px rgba(70,50,15,.26);
+  --ok:#1d7443; --bad:#b0332a;
+  color:#1b160e
+}
+html[data-theme="light"]:not([data-hc="1"]) .sec:not(.sec-hero) .sec-scroll{text-shadow:none}
+html[data-theme="light"]:not([data-hc="1"]) .glass,
+html[data-theme="light"]:not([data-hc="1"]) .sec:not(.sec-hero) :is(.sec-head,.svc,.step,.rev,.rsum,.cred,.cbox,.fq,.about-txt,.tf-card,.quote,.ilink,.chips li,.foot,.rate-chip){
+  box-shadow:0 8px 28px rgba(70,50,15,.16),inset 0 1px 0 rgba(255,255,255,.8)
+}
+html[data-theme="light"]:not([data-hc="1"]) .glass::after,
+html[data-theme="light"]:not([data-hc="1"]) .sec:not(.sec-hero) :is(.sec-head,.svc,.step,.rev,.rsum,.cred,.cbox,.fq,.about-txt,.tf-card,.quote,.ilink,.chips li,.foot,.rate-chip)::after{
+  background:
+    radial-gradient(230px circle at var(--x,50%) var(--y,50%),rgba(214,150,40,calc(var(--hl,0)*1)),rgba(var(--spot),calc(var(--hl,0)*.7)) 38%,transparent 72%),
+    linear-gradient(160deg,rgba(255,255,255,.95) 0%,rgba(120,88,30,.22) 28%,rgba(120,88,30,.12) 62%,rgba(255,255,255,.9) 100%)
+}
+html[data-theme="light"]:not([data-hc="1"]) .glow:hover{box-shadow:0 24px 54px rgba(70,50,15,.3),0 0 34px rgba(var(--spot),.3)}
+html[data-theme="light"]:not([data-hc="1"]) .sec:not(.sec-hero) .sec-head .demo-note{background:rgba(70,50,15,.07)}
+/* первый экран */
+html[data-theme="light"]:not([data-hc="1"]) .hero-plq{color:#1b160e;text-shadow:none}
+html[data-theme="light"]:not([data-hc="1"]) .hero-plq .kicker{color:#7a5718}
+html[data-theme="light"]:not([data-hc="1"]) .hero-plq .kicker::before{background:#7a5718}
+html[data-theme="light"]:not([data-hc="1"]) .hw{color:#17120a;text-shadow:0 1px 0 rgba(255,255,255,.5)}
+html[data-theme="light"]:not([data-hc="1"]) .hn{color:#4b3a18}
+html[data-theme="light"]:not([data-hc="1"]) .hero-lead{color:rgba(27,22,14,.92)}
+html[data-theme="light"]:not([data-hc="1"]) .hero-addr .addr-link{color:#1b160e;border-bottom-color:rgba(27,22,14,.45)}
+html[data-theme="light"]:not([data-hc="1"]) .hero-addr .addr-link:hover{color:#7a5718}
+html[data-theme="light"]:not([data-hc="1"]) .btn-glass{color:#1b160e}
+html[data-theme="light"]:not([data-hc="1"]) .btn-glass:hover{color:#1b160e}
+html[data-theme="light"]:not([data-hc="1"]) .btn-glass.btn-book,html[data-theme="light"]:not([data-hc="1"]) .btn-glass.btn-book:hover{color:#2a1d07}
+html[data-theme="light"]:not([data-hc="1"]) .hero-plq .status{background:rgba(255,255,255,.6);border-color:rgba(70,50,15,.25);color:#1b160e}
+/* шапка, нижняя полоса, меню */
+html[data-theme="light"]:not([data-hc="1"]) .hdr,html[data-theme="light"]:not([data-hc="1"]) .bar{background:rgba(255,253,248,.82)}
+html[data-theme="light"]:not([data-hc="1"]) .hdr::after,html[data-theme="light"]:not([data-hc="1"]) .bar::before{background:linear-gradient(90deg,transparent,rgba(90,65,25,.35),transparent)}
+html[data-theme="light"]:not([data-hc="1"]) .brand-s{color:rgba(60,45,20,.72)}
+html[data-theme="light"]:not([data-hc="1"]) .brand-n{color:#1b160e;text-shadow:none}
+html[data-theme="light"]:not([data-hc="1"]) .nav-a{color:#1b160e}
+html[data-theme="light"]:not([data-hc="1"]) .nav-a:hover,html[data-theme="light"]:not([data-hc="1"]) .nav-a.cur,html[data-theme="light"]:not([data-hc="1"]) .nav > li.open > .nav-a{background:rgba(70,50,15,.09)}
+html[data-theme="light"]:not([data-hc="1"]) .nav-a.cur{box-shadow:inset 0 -2px 0 #c08a28}
+html[data-theme="light"]:not([data-hc="1"]) .hdr .tool{color:#1b160e}
+html[data-theme="light"]:not([data-hc="1"]) .hdr .tool:hover{background:rgba(70,50,15,.09)}
+html[data-theme="light"]:not([data-hc="1"]) .hdr-tel{color:#1b160e}
+html[data-theme="light"]:not([data-hc="1"]) .hdr-tel:hover{color:#7a5718}
+html[data-theme="light"]:not([data-hc="1"]) .hdr-a11y{border-left-color:rgba(70,50,15,.28)}
+html[data-theme="light"]:not([data-hc="1"]) .hdr #hcBtn[aria-pressed="true"]{background:rgba(192,138,40,.22);color:#5a3d0b}
+html[data-theme="light"]:not([data-hc="1"]) .mega,html[data-theme="light"]:not([data-hc="1"]) .lang-dd{background:rgba(255,252,246,.97);border-color:rgba(70,50,15,.2);color:#1b160e}
+html[data-theme="light"]:not([data-hc="1"]) .mega-it:hover,html[data-theme="light"]:not([data-hc="1"]) .lang-dd a:hover,html[data-theme="light"]:not([data-hc="1"]) .lang-dd button:hover{background:rgba(70,50,15,.08)}
+html[data-theme="light"]:not([data-hc="1"]) .lang-dd a.cur{color:#7a5718}
+html[data-theme="light"]:not([data-hc="1"]) .bi{color:#1b160e}
+html[data-theme="light"]:not([data-hc="1"]) .bi:hover{background:rgba(70,50,15,.09)}
+html[data-theme="light"]:not([data-hc="1"]) .bi.cur{color:#7a5718}
+html[data-theme="light"]:not([data-hc="1"]) .mmenu{background:rgba(255,252,246,.98);color:#1b160e}
+html[data-theme="light"]:not([data-hc="1"]) .mmenu .macc-list button:hover{background:rgba(70,50,15,.08)}
+html[data-theme="light"]:not([data-hc="1"]) .mmenu .btn-ghost{border-color:rgba(70,50,15,.4);color:#1b160e}
+html[data-theme="light"]:not([data-hc="1"]) .mmenu .mm-row a,html[data-theme="light"]:not([data-hc="1"]) .mmenu .mm-row button,html[data-theme="light"]:not([data-hc="1"]) .mmenu .mm-tools button{border-color:rgba(70,50,15,.3)}
+html[data-theme="light"]:not([data-hc="1"]) .mmenu .mm-row a.cur{color:#7a5718;border-color:#c08a28}
+html[data-theme="light"]:not([data-hc="1"]) .mmenu .mm-tools{border-color:rgba(192,138,40,.5);background:rgba(70,50,15,.06)}
+html[data-theme="light"]:not([data-hc="1"]) .mmenu .mm-tools button{background:rgba(255,255,255,.7)}
+html[data-theme="light"]:not([data-hc="1"]) .mmenu .mm-tools button[aria-pressed="true"]{border-color:#c08a28;color:#5a3d0b;background:rgba(192,138,40,.2)}
+/* содержимое экранов */
+html[data-theme="light"]:not([data-hc="1"]) .strong-lbl,html[data-theme="light"]:not([data-hc="1"]) .sec:not(.sec-hero) > .sec-scroll .about > div > .strong-lbl{color:rgba(255,255,255,.9);text-shadow:0 1px 2px rgba(0,0,0,.55)}
+html[data-theme="light"]:not([data-hc="1"]) .sec:not(.sec-hero) .kicker{color:#7a5718}
+html[data-theme="light"]:not([data-hc="1"]) .sec:not(.sec-hero) .kicker::before{background:#7a5718}
+html[data-theme="light"]:not([data-hc="1"]) .svc .cic,html[data-theme="light"]:not([data-hc="1"]) .cred .cic,html[data-theme="light"]:not([data-hc="1"]) .cl .cic,html[data-theme="light"]:not([data-hc="1"]) .mega-it .cic{background:rgba(122,87,24,.12);color:#5a3d0b}
+html[data-theme="light"]:not([data-hc="1"]) .svc small{color:rgba(27,22,14,.78)}
+html[data-theme="light"]:not([data-hc="1"]) .sec:not(.sec-hero) .about-txt .quote{background:rgba(70,50,15,.07)}
+html[data-theme="light"]:not([data-hc="1"]) .step-n{background:rgba(255,255,255,.75);border-color:rgba(192,138,40,.9);color:#5a3d0b}
+html[data-theme="light"]:not([data-hc="1"]) .step p{color:rgba(27,22,14,.86)}
+html[data-theme="light"]:not([data-hc="1"]) .rsum .big{color:#5a3d0b}
+html[data-theme="light"]:not([data-hc="1"]) .rev p{color:#1b160e}
+html[data-theme="light"]:not([data-hc="1"]) .fq-a p{color:rgba(27,22,14,.86)}
+html[data-theme="light"]:not([data-hc="1"]) .fq > button .pl{border-color:rgba(70,50,15,.4)}
+html[data-theme="light"]:not([data-hc="1"]) .fld input,html[data-theme="light"]:not([data-hc="1"]) .fld select,html[data-theme="light"]:not([data-hc="1"]) .fld textarea{background:rgba(255,255,255,.88);color:#1b160e;border-color:rgba(70,50,15,.32)}
+html[data-theme="light"]:not([data-hc="1"]) .fld input::placeholder,html[data-theme="light"]:not([data-hc="1"]) .fld textarea::placeholder{color:rgba(27,22,14,.5)}
+html[data-theme="light"]:not([data-hc="1"]) .map{background:rgba(255,255,255,.45)}
+html[data-theme="light"]:not([data-hc="1"]) .sec:not(.sec-hero) .btn-ghost{background:rgba(255,255,255,.62);color:#1b160e;border-color:rgba(70,50,15,.38)}
+html[data-theme="light"]:not([data-hc="1"]) .sec:not(.sec-hero) .btn-ghost:hover{border-color:#c08a28;color:#5a3d0b}
+html[data-theme="light"]:not([data-hc="1"]) .info-links .ilink{color:#1b160e}
+html[data-theme="light"]:not([data-hc="1"]) .rate-chip{color:#1b160e}
+html[data-theme="light"]:not([data-hc="1"]) .foot a{color:#1b160e}
+html[data-theme="light"]:not([data-hc="1"]) .sec :focus-visible,html[data-theme="light"]:not([data-hc="1"]) .hdr :focus-visible,html[data-theme="light"]:not([data-hc="1"]) .bar :focus-visible,html[data-theme="light"]:not([data-hc="1"]) .mmenu :focus-visible{outline-color:#a06a10}
+html[data-theme="light"]:not([data-hc="1"]) .pay-pill:not(.pay-logo){background:rgba(255,255,255,.7)}
+
+/* ---------- режим для слабовидящих: чистый чёрный экран без стекла ---------- */
+html[data-hc="1"] .sec:not(.sec-hero){background:#000}
+html[data-hc="1"] .sec-hero{background:#000}
+html[data-hc="1"] .glass,html[data-hc="1"] .hdr,html[data-hc="1"] .bar,html[data-hc="1"] .mmenu,html[data-hc="1"] .btn-glass,
+html[data-hc="1"] .sec:not(.sec-hero) :is(.sec-head,.svc,.step,.rev,.rsum,.cred,.cbox,.fq,.about-txt,.tf-card,.quote,.ilink,.chips li,.foot,.rate-chip){
+  background:#000!important;border:2px solid #fff!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;box-shadow:none!important}
+html[data-hc="1"] .glass::after,html[data-hc="1"] .glow::before,html[data-hc="1"] .hdr::after,html[data-hc="1"] .bar::before,
+html[data-hc="1"] .sec:not(.sec-hero) :is(.sec-head,.svc,.step,.rev,.rsum,.cred,.cbox,.fq,.about-txt,.tf-card,.quote,.ilink,.chips li,.foot,.rate-chip)::after{display:none!important}
+html[data-hc="1"] .hero-clouds,html[data-hc="1"] .hero-gulls,html[data-hc="1"] .sd-canvas,html[data-hc="1"] .hero-video{display:none!important}
+html[data-hc="1"] .btn-glass.btn-book,html[data-hc="1"] .hdr .btn-primary,html[data-hc="1"] .sec:not(.sec-hero) .btn-primary{background:#ffe14d!important;color:#000!important}
+html[data-hc="1"] .hw,html[data-hc="1"] .hn{text-shadow:none}
+html[data-hc="1"] .btn-glass.btn-book *,html[data-hc="1"] .sec:not(.sec-hero) .btn-primary *{color:#000!important}
+
+/* язык виден и на телефоне (правка Сергея 17.10) */
+@media screen and (max-width:700px){.tool-lang{padding:0 8px;gap:4px}.hdr-tools{gap:6px}}
+
+/* ==========================================================================
+   Материалы конторы (модалка): обычные абзацы и списки, ссылки внутри строки;
+   текст по ширине с переносами слов (мягкие переносы ставит js, hyphens:auto — запас).
+   На телефоне — по левому краю с переносами, чтобы не было «рек» из больших пробелов.
+   ========================================================================== */
+.info-i > div{display:none}
+.info-i.open > div{display:block}
+.info-i p,.info-i li{
+  display:block;margin:0 0 10px;text-align:justify;text-justify:inter-word;
+  -webkit-hyphens:auto;hyphens:auto;hyphenate-limit-chars:7 3 3;overflow-wrap:break-word;word-break:normal
+}
+.info-i li{display:list-item;margin:0 0 5px}
+.info-i a:not(.info-f),.info-i b,.info-i strong,.info-i em,.info-i span{display:inline;margin:0;padding:0}
+.info-i a:not(.info-f){color:var(--accent-d);text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere;word-break:break-all}
+.info-i p:has(> b){text-align:left}
+.info-i h4,.info-i > button span:first-child{text-align:left;hyphens:manual}
+@media (max-width:480px){
+  .info-i p,.info-i li{text-align:left}
+}
+
+/* ==========================================================================
+   Обратный звонок: плашка переворачивается (3D flip) в форму; лицевая и обратная стороны лежат в одной
+   ячейке сетки, поэтому высота плашки не прыгает. Переворот: поворот до ребра, смена стороны, поворот обратно.
+   ========================================================================== */
+.flipc{display:grid;transform-origin:50% 50%;will-change:auto}
+.flipc > .flip-front,.flipc > .flip-back{grid-area:1/1;min-width:0;align-self:center}
+/* в окне высота меняется в момент, когда плашка стоит ребром: показываем только одну сторону */
+.flipc-swap:not(.show-back) > .flip-back,.flipc-swap.show-back > .flip-front{display:none}
+.flipc:not(.show-back) > .flip-back,.flipc.show-back > .flip-front{visibility:hidden;pointer-events:none}
+.flipc > .flip-back h3{font-size:19px;font-weight:600}
+.flipc > .flip-back .fdesc{color:var(--muted);font-size:13.5px;margin-top:6px}
+.bk-opt{font-family:inherit;cursor:pointer;width:100%}
+button.bk-opt{appearance:none;-webkit-appearance:none}
+.fld label .opt{font-weight:400;opacity:.72}
+.cb-actions{display:grid;grid-template-columns:auto 1fr;gap:10px;margin-top:4px}
+.cb-actions .btn{min-height:46px;padding:0 14px;font-size:14.5px;gap:8px}
+.cb-actions .btn span{white-space:normal;text-align:center;line-height:1.2}
+/* письмо на почту: адрес рядом с кнопкой «Скопировать адрес» (в окне и в сообщении после отправки) */
+.mail-line{display:flex;align-items:center;gap:6px 14px;flex-wrap:wrap;margin-top:4px;font-size:13.5px;color:var(--muted)}
+.mail-addr{display:inline-flex;align-items:center;gap:6px 12px;flex-wrap:wrap}
+.mail-addr b{color:var(--text);font-weight:600;font-size:14.5px;word-break:break-all}
+.mail-copy{padding:0 12px;font-size:13px;gap:6px}
+.mail-copy .ico{width:16px;height:16px}
+.mail-copy.done{border-color:var(--ok);color:var(--ok)}
+.fok .ok-t{display:block}
+.fok .mail-addr.in-ok{margin-top:8px}
+.fok .mail-addr b{color:inherit}
+.cb-actions.solo{grid-template-columns:1fr}
+/* второй телефон в списке контактов: подпись под номером */
+/* языковые версии: у адреса в контактах линия-подчёркивание шла на 14 px ниже текста и пересекала строку «для такси» — подчёркиваем сам текст */
+html:not([lang="ru"]) .cl a.addr-link{display:inline;border-bottom:0;padding:0;margin:0;text-decoration:underline;text-underline-offset:3px}
+.cl .addr-taxi{display:block;font-size:12.5px;font-weight:400;line-height:1.3;color:var(--muted);margin-top:3px}
+.cl .tel2{margin-top:6px}
+.cl a.tel-b{display:inline-block;padding:7px 0;margin:-7px 0}
+.cl a.tel-b:hover{color:var(--accent-d)}
+.cl .tel-note{display:block;font-size:12.5px;font-weight:400;color:var(--muted);line-height:1.3;margin-top:1px}
+/* обратная сторона «Позвонить»: крупный номер, кнопка, часы приёма */
+.fb-view[hidden]{display:none}
+/* размер номера считается от ширины самой плашки (container query): не вылезает ни на узком телефоне, ни при «А+» */
+.fb-view[data-view="tel"]{container-type:inline-size}
+.tel-num{display:block;margin-top:14px;text-align:center;font-family:var(--serif);font-weight:600;font-size:clamp(18px,9cqi,34px);letter-spacing:.01em;line-height:1.15;color:var(--text);white-space:nowrap}
+.tel-num:hover{color:var(--accent-d)}
+.tel-num2{display:flex;flex-direction:column;align-items:center;gap:1px;margin-top:4px;padding:8px 0;color:var(--text);line-height:1.25;text-align:center}
+.tel-num2 b{font-size:17px;font-weight:600;white-space:nowrap}
+.tel-num2 span{font-size:12.5px;color:var(--muted)}
+.tel-num2:hover b{color:var(--accent-d)}
+.tel-call{width:100%;margin-top:8px}
+.tel-hours{margin-top:12px}
+.tel-hours > b{display:block;font-size:13px;font-weight:500;color:var(--muted)}
+.hours-mini{margin-top:2px;font-size:13.5px}
+.hours-mini td{padding:5px 4px}
+.flipc .cb-actions.solo{margin-top:12px}
+.mbox-mail .fg{margin-top:10px}
+/* высокое окно (телефон): крестик остаётся на месте, прокручивается только форма */
+.mbox-mail{overflow:hidden;display:flex;flex-direction:column;padding:0}
+.mbox-mail #mailBox{overflow:auto;min-height:0;padding:26px 26px 22px;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+@media (max-width:479px){.mbox-mail #mailBox{padding:18px 14px 14px}}
+.flipc .fok{display:none}
+.flipc .fok.show{display:block}
+@media (max-width:360px){.cb-actions{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.flipc{will-change:auto}}
+
+/* ==========================================================================
+   Языковые версии: шрифты для китайского, длинные слова не вылезают из плашек
+   ========================================================================== */
+html[lang="zh"]{--font:"Inter","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC","Source Han Sans SC",sans-serif;
+  --serif:"Playfair Display","Songti SC","Noto Serif CJK SC","Source Han Serif SC","SimSun",serif}
+html:not([lang="ru"]) :is(.svc,.step,.rev,.cred,.fq,.cbox,.sec-head,.chips li,.rsum,.rate-chip,.status,.foot,.hero-plq){overflow-wrap:break-word}
+.map-actions .btn{flex:1 1 9.5em}   /* короткие подписи (китайский) не схлопываются до буквы в столбик: на узкой плашке кнопки встают друг под другом */
+html:not([lang="ru"]) :is(.rsum,.map-actions) .btn span{overflow-wrap:anywhere}
+html:not([lang="ru"]) .rsum .btn{white-space:normal;text-align:center;line-height:1.25;padding-top:9px;padding-bottom:9px}
+
+/* ==========================================================================
+   Тарифы и льготы (п. 3.1.5–3.1.8 Стандартов ФНП): таблица, расчёт, льготы, источники.
+   Цвета — от родителя (светлая/тёмная тема, режим для слабовидящих); на телефоне строки таблицы встают в столбик.
+   ========================================================================== */
+.tf{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:20px;align-items:start}
+.tf-col{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;min-width:0}
+.tf-card{padding:18px 22px;--tf-line:rgba(255,255,255,.26);container:tfc / inline-size}
+.tf-card h3{margin:0 0 10px;font-size:17px;line-height:1.3;font-weight:600}
+.tf-card p{margin:0 0 10px;font-size:14.5px;line-height:1.5}
+.tf-card p:last-child,.tf-card ul:last-child{margin-bottom:0}
+.tf-card a{color:#f6e6bd;text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
+.tf-card a:hover{color:#ffe2a8}
+.tf-card .tf-note{font-size:13.5px;line-height:1.45;opacity:.92}
+.tf-t{width:100%;border-collapse:collapse;font-size:14.5px;line-height:1.42}
+.tf-t th,.tf-t td{padding:9px 12px 9px 0;text-align:left;vertical-align:top;border-bottom:1px solid var(--tf-line);overflow-wrap:break-word}
+.tf-t th:last-child,.tf-t td:last-child{padding-right:0}
+.tf-t thead th{padding-top:2px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;opacity:.88}
+.tf-t tbody th{width:31%;font-weight:600}
+.tf-t td{width:34.5%}
+.tf-v b{font-weight:600;white-space:nowrap}
+.tf-lbl{display:none}
+.tf-list{margin:0 0 12px;padding-left:18px;list-style:disc}
+.tf-list li{margin:0 0 8px;font-size:14.5px;line-height:1.45;overflow-wrap:break-word}
+.tf-more{margin-top:12px;padding-top:4px;border-top:1px solid var(--tf-line)}
+.tf-more summary{cursor:pointer;display:flex;align-items:center;min-height:44px;font-weight:600;font-size:14.5px}
+.tf-more h4{margin:12px 0 4px;font-size:14px;font-weight:600}
+.tf-more p{margin:0 0 6px}
+.tf-card :focus-visible{outline:3px solid #ffe2a8;outline-offset:2px;border-radius:4px}
+html[data-theme="light"]:not([data-hc="1"]) .tf-card{--tf-line:rgba(70,50,15,.24)}
+html[data-theme="light"]:not([data-hc="1"]) .tf-card a{color:#7a5718}
+html[data-theme="light"]:not([data-hc="1"]) .tf-card a:hover{color:#5a3d0b}
+html[data-theme="light"]:not([data-hc="1"]) .tf-card :focus-visible{outline-color:#a06a10}
+html[data-hc="1"] .tf-card{--tf-line:#fff}
+html[data-hc="1"] .tf-card a{color:#ffe14d}
+@media (max-width:991px){.tf{grid-template-columns:1fr}}
+@media (max-width:640px){
+  .tf-card{padding:14px 16px}
+  .tf-t,.tf-t tbody,.tf-t tr,.tf-t th,.tf-t td{display:block;width:auto}
+  .tf-t thead{display:none}
+  .tf-t tr{padding-bottom:8px;border-bottom:1px solid var(--tf-line)}
+  .tf-t tbody th{width:auto;padding:10px 0 4px;border-bottom:0;font-size:15px}
+  .tf-t td{display:flex;gap:10px;align-items:baseline;padding:3px 0;border-bottom:0}
+  .tf-lbl{display:block;flex:0 0 9.4em;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;opacity:.78}
+  .tf-t td .tf-v{flex:1 1 auto;min-width:0;overflow-wrap:anywhere}
+}
+@container tfc (max-width:300px){.tf-t td{display:block}.tf-lbl{margin-bottom:1px}}
+html:not([lang="ru"]) .tf-card :is(h3,p,li,th,td,summary){overflow-wrap:break-word}
+
+/* ==========================================================================
+   Б-6: ссылки в плашках «О нотариусе» и окно «Официальные сведения и ссылки»
+   ========================================================================== */
+.cred b a{color:inherit;text-decoration:underline;text-decoration-color:rgba(255,255,255,.5);text-underline-offset:3px}
+.cred b a:hover{color:#ffe2a8;text-decoration-color:#ffe2a8}
+html[data-theme="light"]:not([data-hc="1"]) .cred b a{text-decoration-color:rgba(70,50,15,.45)}
+html[data-theme="light"]:not([data-hc="1"]) .cred b a:hover{color:#7a5718;text-decoration-color:#7a5718}
+html[data-hc="1"] .cred b a{color:#ffe14d}
+.about-side .about-more{justify-content:flex-start;margin-top:12px}
+.off{margin-top:12px;display:grid;gap:14px}
+.off h4{margin:0 0 4px;font-size:15px;font-weight:600;line-height:1.35}
+.off p{margin:0;font-size:14px;line-height:1.5;color:var(--muted)}
+.off-links{margin:6px 0 0;padding-left:18px;list-style:disc}
+.off-links li{margin:0 0 5px;font-size:14px;line-height:1.4;overflow-wrap:anywhere}
+.off a{color:var(--accent-d);text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
+.off a:hover{color:var(--text)}
+html[data-hc="1"] .off a{color:#ffe14d}
+.off p,.off h4{overflow-wrap:break-word}
+
+/* ==========================================================================
+   Б-4, Б-9: строка о передаче данных у форм со ссылкой на Политику; владелец сайта в подвале
+   ========================================================================== */
+.pd-note{margin:8px 0 0;font-size:12.5px;line-height:1.45;color:var(--muted)}
+.pd-note a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+.pd-note a:hover{color:#ffe2a8}
+html[data-theme="light"]:not([data-hc="1"]) .pd-note a:hover{color:#7a5718}
+.mbox .pd-note a{color:var(--accent-d)}
+.mbox .pd-note a:hover{color:var(--text)}
+html[data-hc="1"] .pd-note,html[data-hc="1"] .foot-owner{color:#fff;opacity:1}
+html[data-hc="1"] .pd-note a{color:#ffe14d}
+.foot-owner{margin-top:.5em;font-size:13px;line-height:1.45;opacity:.85}
+.pd-note,.foot-owner{overflow-wrap:anywhere}
