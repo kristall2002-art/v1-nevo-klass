@@ -692,7 +692,11 @@ html[data-hc="1"] :focus-visible{outline:3px solid #ffe14d;outline-offset:2px}
 
 <!-- 1. HOME -->
     <section class="sec sec-hero active" id="home" data-title="nav_home">
-      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="hero-bg" aria-hidden="true">
+        <video class="hero-video" id="heroVideo" autoplay muted loop playsinline preload="auto" poster="img/hero-poster.jpg" disablepictureinpicture tabindex="-1"></video>
+        <script>(function(){var v=document.getElementById('heroVideo');if(!v)return;var c=navigator.connection;if((window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches)||(c&&c.saveData)){v.removeAttribute('autoplay');return}v.src=(window.matchMedia&&matchMedia('(max-width:768px)').matches)?'img/hero-video-mobile.mp4':'img/hero-video.mp4'})();</script>
+        <canvas class="hero-clouds" id="heroClouds"></canvas>
+      </div>
       <div class="sec-scroll"><div class="wrap">
         <div class="hero hero-plq glass glow">
           <span class="kicker rv" style="--i:0">Автошкола · Санкт-Петербург, Невский район</span>
@@ -1803,6 +1807,8 @@ html[data-hc="1"] :focus-visible{outline:3px solid #ffe14d;outline-offset:2px}
 })();
 </script>
 <script src="js/etalon.js" defer></script>
+<script src="js/clouds.js" defer></script>
+<script src="js/gulls.js" defer></script>
 <script src="js/title-b.js" defer></script>
 </body>
 </html>
