@@ -123,3 +123,76 @@ html[data-theme="light"]:not([data-hc="1"]) .foot{color:#22344d}
   .bar .bi[href^="mailto:"]{display:none}
 }
 .nowrap{white-space:nowrap}
+
+/* ================= перенос содержания nevo-class.ru (12.11): новые экраны ================= */
+.nk-sec .sec-bg{background:linear-gradient(160deg,#eef5fc 0%,#d6e6f6 100%)}
+/* в шапке семь разделов: телефон на плашке прячем раньше (он есть в меню и в нижней панели) */
+@media screen and (max-width:1679px){.hdr-tel{display:none}}
+@media screen and (min-width:1280px) and (max-width:1439px){.nav-a{padding:10px 7px;font-size:14.5px}}
+html[data-theme="dark"] .nk-sec .sec-bg{background:linear-gradient(160deg,#0f1b2b 0%,#16263b 100%)}
+.nk-sec .sec-head{padding:16px 22px}
+.nk-sec .sec-head{width:auto!important;max-width:none;display:block;align-self:stretch}
+ol.nk-list{list-style:decimal}
+ul.nk-list{list-style:disc}
+.nk-list li::marker{color:var(--accent,#1f5fa8)}
+/* контакты на телефоне прокручиваются — возвращаем карточку с адресом и карту, которые шаблон прятал ради «всё в один экран» */
+@media (max-width:760px){#contacts .cbox-info{display:block}#contacts .mapbox{padding:14px 16px;background:var(--card,rgba(255,255,255,.86));border:1px solid var(--line2,rgba(22,60,110,.16))}#contacts .mapbox .map{display:block;height:220px;min-height:220px;border-radius:12px;overflow:hidden;margin-bottom:10px}}
+.nk-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.nk-card,.nk-box,.nk-rev{background:var(--card,rgba(255,255,255,.86));border:1px solid var(--line2,rgba(22,60,110,.16));border-radius:16px;box-shadow:var(--shadow,0 1px 12px rgba(22,60,110,.14))}
+.nk-card{padding:16px 18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.nk-card h3,.nk-box h3{font-size:19px;font-weight:600;margin:0}
+.nk-lead{margin:0;color:var(--muted);font-size:15px;line-height:1.45}
+.nk-list{margin:0;padding-left:18px;font-size:14.5px;line-height:1.45;display:grid;gap:4px}
+.nk-price{background:var(--accent-soft,rgba(31,95,168,.1));border-radius:12px;padding:10px 12px}
+.nk-price small{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.nk-price ul{margin:4px 0 0;padding:0;list-style:none;font-weight:600;font-size:15px;display:grid;gap:2px}
+.nk-more summary{cursor:pointer;font-weight:600;font-size:14.5px;min-height:40px;display:flex;align-items:center;color:var(--accent,#1f5fa8)}
+.nk-more[open] summary{margin-bottom:6px}
+.nk-card .btn{margin-top:auto;justify-content:center}
+.nk-why{list-style:none;margin:0 0 14px;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.nk-why li{display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:999px;background:var(--card,rgba(255,255,255,.86));border:1px solid var(--line2,rgba(22,60,110,.16));font-size:14px;font-weight:500}
+.nk-why .ico{width:16px;height:16px;color:var(--accent,#1f5fa8);flex:none}
+.nk-two{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:14px;align-items:start}
+.nk-box{padding:18px 20px;display:grid;gap:12px;min-width:0}
+.nk-box p{margin:0;line-height:1.5}
+.nk-lic,.nk-note{font-size:13.5px;color:var(--muted)}
+.nk-team{display:grid;gap:10px}
+.nk-person{display:flex;gap:12px;align-items:flex-start}
+.nk-person .cic{flex:none}
+.nk-person b{display:block}
+.nk-person small{display:block;color:var(--accent,#1f5fa8);font-weight:600}
+.nk-person span:not(.cic){display:block;font-size:13.5px;color:var(--muted)}
+.nk-gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.nk-gallery img{width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:10px;background:var(--bg3,#e3ecf6)}
+.nk-revs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.nk-rev{padding:16px 18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.nk-rev p{margin:0;font-size:14.5px;line-height:1.5}
+.nk-rev-t{font-size:15px}
+.nk-rev-meta{margin-top:auto;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.nk-rev-meta small{color:var(--muted)}
+.nk-center{display:flex;justify-content:center;margin-top:14px}
+.nk-center .btn{min-height:48px}
+.nk-docs{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.nk-docs a{display:flex;align-items:center;gap:10px;min-height:52px;padding:10px 14px;border-radius:12px;background:var(--card,rgba(255,255,255,.86));border:1px solid var(--line2,rgba(22,60,110,.16));color:inherit;text-decoration:none}
+.nk-docs a:hover{border-color:var(--accent,#1f5fa8)}
+.nk-docs .ico{width:20px;height:20px;color:var(--accent,#1f5fa8);flex:none}
+.nk-docs span{flex:1;min-width:0}
+.nk-docs small{color:var(--muted);white-space:nowrap}
+.nk-msg{display:flex;flex-wrap:wrap;gap:6px 14px}
+.nk-msg a{text-decoration:underline;text-underline-offset:3px;display:inline-block;padding:9px 0}
+.nk-way summary{min-height:32px;font-size:14px}
+.mbox-rev{max-width:760px;width:100%;max-height:calc(var(--vh,100vh) - 40px);display:flex;flex-direction:column}
+.nk-revall{overflow-y:auto;display:grid;gap:10px;margin-top:12px;padding-right:4px}
+@media (max-width:991px){
+  .nk-grid,.nk-revs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .nk-two{grid-template-columns:1fr}
+}
+@media (max-width:767px){
+  .nk-grid,.nk-revs,.nk-docs{grid-template-columns:1fr}
+  .nk-sec .sec-head{padding:12px 14px}
+  .nk-card,.nk-box,.nk-rev{padding:14px 16px}
+  .nk-card .btn,.nk-center .btn{min-height:48px;width:100%}
+  .nk-why li{font-size:13.5px}
+  .nk-docs small{display:none}
+  .foot .fl a{padding:12px 0;margin:-6px 16px -6px 0}
+}
