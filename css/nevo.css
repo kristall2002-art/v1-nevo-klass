@@ -528,3 +528,94 @@ html[data-theme="dark"] .nk-city{--road:rgba(91,143,204,.13);--edge:rgba(255,255
 /* подписи нижней панели не влезают (крупный шрифт) — только значки */
 html.nk-bar-icons .bar .bi span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 html.nk-bar-icons .bar .bi .ico{width:24px;height:24px}
+
+/* ================= 12.11, восьмая волна: на каждом экране своя живая картинка (SVG + CSS/SMIL, без библиотек) =================
+   полоса внизу раздела, высоту и место ей задаёт скрипт: только свободное место над нижней панелью, текст не закрывает */
+.nk-anim,.nk-diag{--road:rgba(31,95,168,.11);--edge:rgba(255,255,255,.85);--dash:rgba(255,255,255,.95);--pad:rgba(31,95,168,.07);--street:rgba(255,255,255,.9);--water:rgba(31,95,168,.16);--bank:rgba(31,95,168,.10);--pole:#7d8ea5}
+html[data-theme="dark"] .nk-anim,html[data-theme="dark"] .nk-diag{--road:rgba(91,143,204,.14);--edge:rgba(255,255,255,.18);--dash:rgba(255,255,255,.34);--pad:rgba(91,143,204,.08);--street:rgba(255,255,255,.14);--water:rgba(91,143,204,.18);--bank:rgba(91,143,204,.12);opacity:.88}
+.nk-anim{position:absolute;left:0;right:0;bottom:calc(var(--bar-h,60px) + env(safe-area-inset-bottom,0px));height:90px;overflow:hidden;pointer-events:none}
+.nk-anim svg{display:block;width:100%;height:100%;overflow:visible}
+.nk-anim .g-road{fill:var(--road)}
+.nk-anim .g-edge{stroke:var(--edge);stroke-width:2;fill:none}
+.nk-anim .g-dash{stroke:var(--dash);stroke-width:3;stroke-dasharray:30 34;fill:none}
+.nk-anim .g-pad{fill:var(--pad)}
+.nk-anim .g-pole{stroke:var(--pole);stroke-width:3;fill:none}
+.nk-anim .g-curb{stroke:rgba(31,95,168,.35);stroke-width:3}
+.nk-anim .g-street{stroke:var(--street);stroke-width:14;fill:none}
+.nk-anim .g-water{fill:var(--water)}
+.nk-anim .g-wave{stroke:rgba(255,255,255,.7);stroke-width:2;stroke-dasharray:18 26;fill:none;animation:nkaWave 3s linear infinite}
+.nk-anim .g-bank{fill:var(--bank)}
+.nk-anim .g-pier{fill:#9fb3c8}
+.nk-anim .g-deck{fill:#5a6f89}
+.nka-route{fill:none;stroke:#1f5fa8;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1000;stroke-dashoffset:1000;opacity:.7}
+.nka-st circle{fill:#fff;stroke:#1f5fa8;stroke-width:3}
+.nka-st text{font:700 15px/1 system-ui,sans-serif;fill:#1f5fa8}
+.nka-st1 circle{animation:nkaSt1 14s linear infinite}.nka-st2 circle{animation:nkaSt2 14s linear infinite}.nka-st3 circle{animation:nkaSt3 14s linear infinite}.nka-st4 circle{animation:nkaSt4 14s linear infinite}
+.nka-flag{transform-box:fill-box;transform-origin:left center;animation:nkaFlag 1.2s ease-in-out infinite alternate}
+.nka-howcar{animation:nkaHow 14s linear infinite}
+.nka-park{animation:nkaPark 12s linear infinite}
+.nka-rev{fill:#fff;opacity:0;animation:nkaRev 12s linear infinite}
+.nka-pinb{animation:nkaPin 1.4s ease-in-out infinite}
+.nka-l{opacity:.18}
+.nka-lr{animation:nkaLR 9s linear infinite}.nka-ly{animation:nkaLY 9s linear infinite}.nka-lg{animation:nkaLG 9s linear infinite}
+.nka-bookcar{animation:nkaBook 9s infinite}
+.nka-bookcar2{animation:nkaBook2 9s linear infinite}
+.nka-leafl{transform-box:view-box;transform-origin:380px 59px;animation:nkaLeafL 12s ease-in-out infinite}
+.nka-leafr{transform-box:view-box;transform-origin:620px 59px;animation:nkaLeafR 12s ease-in-out infinite}
+.nka-boat{animation:nkaBoat 12s linear infinite}
+.nka-mcar1{animation:nkaM1 12s linear infinite}
+.nka-mcar2{animation:nkaM2 12s linear infinite}
+@keyframes nkaWave{to{stroke-dashoffset:-44}}
+@keyframes nkaSt1{0%,9.9%{fill:#fff}10%,95%{fill:#9be3b7}100%{fill:#fff}}
+@keyframes nkaSt2{0%,25.9%{fill:#fff}26%,95%{fill:#9be3b7}100%{fill:#fff}}
+@keyframes nkaSt3{0%,41.9%{fill:#fff}42%,95%{fill:#9be3b7}100%{fill:#fff}}
+@keyframes nkaSt4{0%,57.9%{fill:#fff}58%,95%{fill:#9be3b7}100%{fill:#fff}}
+@keyframes nkaFlag{from{transform:skewY(0)}to{transform:skewY(-8deg)}}
+@keyframes nkaHow{0%{transform:translateX(-160px);opacity:0}3%{opacity:1}10%,16%{transform:translateX(155px)}26%,32%{transform:translateX(355px)}42%,48%{transform:translateX(555px)}58%,64%{transform:translateX(755px)}74%,80%{transform:translateX(875px);opacity:1}92%{transform:translateX(1150px);opacity:0}100%{transform:translateX(1150px);opacity:0}}
+@keyframes nkaPark{0%{transform:translate(-160px,46px);opacity:0}4%{opacity:1}30%,36%{transform:translate(720px,46px)}58%,76%{transform:translate(565px,58px)}86%{transform:translate(760px,48px);opacity:1}97%,100%{transform:translate(1150px,46px);opacity:0}}
+@keyframes nkaRev{0%,36%{opacity:0}37%,58%{opacity:1}59%,100%{opacity:0}}
+@keyframes nkaPin{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes nkaLR{0%,50%{opacity:1}50.1%,100%{opacity:.18}}
+@keyframes nkaLY{0%,50%{opacity:.18}50.1%,56%{opacity:1}56.1%,92%{opacity:.18}92.1%,100%{opacity:1}}
+@keyframes nkaLG{0%,56%{opacity:.18}56.1%,92%{opacity:1}92.1%,100%{opacity:.18}}
+@keyframes nkaBook{0%{transform:translateX(-160px);opacity:0;animation-timing-function:ease-out}4%{opacity:1;animation-timing-function:ease-out}30%{transform:translateX(392px);animation-timing-function:linear}56%{transform:translateX(392px);animation-timing-function:ease-in}84%{transform:translateX(1150px);opacity:1}86%,100%{transform:translateX(1150px);opacity:0}}
+@keyframes nkaBook2{0%{transform:translateX(1150px);opacity:0}6%{opacity:1}40%{transform:translateX(-80px);opacity:1}44%,100%{transform:translateX(-120px);opacity:0}}
+@keyframes nkaLeafL{0%,40%{transform:rotate(0)}48%,72%{transform:rotate(-38deg)}80%,100%{transform:rotate(0)}}
+@keyframes nkaLeafR{0%,40%{transform:rotate(0)}48%,72%{transform:rotate(38deg)}80%,100%{transform:rotate(0)}}
+@keyframes nkaBoat{0%,49%{transform:translate(250px,74px);opacity:0}52%{opacity:1}70%{opacity:1}73%,100%{transform:translate(690px,74px);opacity:0}}
+@keyframes nkaM1{0%{transform:translateX(-120px);opacity:0}3%{opacity:1}36%{transform:translateX(900px);opacity:1}39%,100%{transform:translateX(960px);opacity:0}}
+@keyframes nkaM2{0%,82%{transform:translateX(1100px);opacity:0}85%{opacity:1}99%{transform:translateX(120px);opacity:1}100%{transform:translateX(100px);opacity:0}}
+/* «Обучение и цены»: дороги по диагонали за плитками — плитки и заголовок плотные, текст поверх не просвечивает */
+.nk-diag{position:absolute;left:0;right:0;top:var(--hdr-h);bottom:calc(var(--bar-h,60px) + env(safe-area-inset-bottom,0px));overflow:hidden;pointer-events:none}
+.nkd-r{position:absolute;left:50%;top:50%;width:240vmax;height:46px;margin:-23px 0 0 -120vmax;background:var(--road);border-top:2px solid var(--edge);border-bottom:2px solid var(--edge)}
+.nkd-a{transform:rotate(-17deg)}
+.nkd-b{transform:rotate(17deg)}
+.nkd-dash{position:absolute;left:0;right:0;top:50%;height:3px;margin-top:-1.5px;background:repeating-linear-gradient(90deg,var(--dash) 0 26px,transparent 26px 56px)}
+.nkd-car{position:absolute;left:0;width:46px;height:23px;top:calc(50% + 2px);will-change:transform;animation:nkdGo 18s linear infinite}
+.nkd-back{top:calc(50% - 25px);animation-name:nkdBack}
+.nkd-c2{animation-duration:22s;animation-delay:-9s}.nkd-c3{animation-duration:20s;animation-delay:-6s}.nkd-c4{animation-duration:24s;animation-delay:-15s}
+@keyframes nkdGo{from{transform:translateX(70vmax)}to{transform:translateX(170vmax)}}
+@keyframes nkdBack{from{transform:translateX(170vmax) scaleX(-1)}to{transform:translateX(70vmax) scaleX(-1)}}
+#services .nk-tile{background:var(--card-solid,#fff)}
+html[data-theme="dark"] #services .nk-tile{--card-solid:#15243a}
+#services .sec-head{background:rgba(255,255,255,.96)}
+html[data-theme="dark"] #services .sec-head{background:rgba(16,28,46,.96)}
+@media (max-width:767px){.nkd-r{height:34px;margin-top:-17px}.nkd-car{width:34px;height:17px}.nkd-back{top:calc(50% - 18px)}}
+/* вне активного раздела и при «меньше движения» — стоят */
+.sec:not(.active) .nk-anim *,.sec:not(.active) .nk-diag *{animation-play-state:paused!important}
+@media (prefers-reduced-motion:reduce){.nk-anim *,.nk-diag *{animation:none!important}}
+/* телефон: текст раздела — сразу под шапкой, всё свободное место — внизу, под живую картинку */
+@media (max-width:767px){.nk-sec .sec-scroll>.wrap{margin-top:0!important}}
+
+/* восьмая волна, правка: дороги контрастнее, позиции под обрезку по бокам на телефоне */
+.nk-anim,.nk-diag{--road:rgba(31,95,168,.16);--pad:rgba(31,95,168,.09)}
+.nk-anim .g-street2{stroke:var(--road);stroke-width:30;fill:none}
+.nk-anim .g-cdash{stroke:var(--dash);stroke-width:2.5;stroke-dasharray:16 18;fill:none}
+@keyframes nkaSt1{0%,9.9%{fill:#fff}10%,95%{fill:#9be3b7}100%{fill:#fff}}
+@keyframes nkaHow{0%{transform:translateX(-160px);opacity:0}3%{opacity:1}10%,16%{transform:translateX(258px)}26%,32%{transform:translateX(378px)}42%,48%{transform:translateX(498px)}58%,64%{transform:translateX(618px)}74%,80%{transform:translateX(700px);opacity:1}92%{transform:translateX(1150px);opacity:0}100%{transform:translateX(1150px);opacity:0}}
+@keyframes nkaPark{0%{transform:translate(-160px,36px);opacity:0}4%{opacity:1}30%,36%{transform:translate(620px,36px)}58%,76%{transform:translate(497px,49px)}86%{transform:translate(660px,38px);opacity:1}97%,100%{transform:translate(1150px,36px);opacity:0}}
+@keyframes nkaBook{0%{transform:translateX(-160px);opacity:0;animation-timing-function:ease-out}4%{opacity:1;animation-timing-function:ease-out}30%{transform:translateX(398px);animation-timing-function:linear}56%{transform:translateX(398px);animation-timing-function:ease-in}84%{transform:translateX(1150px);opacity:1}86%,100%{transform:translateX(1150px);opacity:0}}
+@keyframes nkaBoat{0%,49%{transform:translate(300px,72px);opacity:0}52%{opacity:1}70%{opacity:1}73%,100%{transform:translate(640px,72px);opacity:0}}
+.nka-leafl{transform-origin:380px 58px}.nka-leafr{transform-origin:620px 58px}
+@keyframes nkaHow{0%{transform:translateX(-160px);opacity:0}3%{opacity:1}10%,16%{transform:translateX(298px)}26%,32%{transform:translateX(398px)}42%,48%{transform:translateX(498px)}58%,64%{transform:translateX(598px)}74%,80%{transform:translateX(668px);opacity:1}92%{transform:translateX(1150px);opacity:0}100%{transform:translateX(1150px);opacity:0}}
+@keyframes nkaPark{0%{transform:translate(-160px,36px);opacity:0}4%{opacity:1}30%,36%{transform:translate(600px,36px)}58%,76%{transform:translate(500px,49px)}86%{transform:translate(640px,38px);opacity:1}97%,100%{transform:translate(1150px,36px);opacity:0}}
