@@ -481,3 +481,50 @@ html[data-theme="dark"] .nk-city{--road:rgba(91,143,204,.13);--edge:rgba(255,255
 }
 @media (max-width:767px) and (min-height:701px){:root{--bar-h:64px}}
 @media (min-width:768px) and (max-width:991px){.nk-city{bottom:calc(var(--bar-h,60px) + 10px + env(safe-area-inset-bottom,0px))}}
+/* ================= 12.11, седьмая волна: увеличенный шрифт телефона (встроенный браузер Telegram и т. п.) =================
+   если раздел не влезает даже ужатым — включается плотная раскладка (та же, что у низких телефонов); класс ставит скрипт */
+@media (max-width:767px){
+  html.nk-compact{--hdr-h:50px;--bar-h:46px}
+  html.nk-compact .hdr-in{height:50px}
+  html.nk-compact .bar{padding-top:3px;padding-bottom:calc(3px + env(safe-area-inset-bottom,0px))}
+  html.nk-compact .bar .bi{padding:4px 0}
+  html.nk-compact .bar .bi span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  html.nk-compact .bar .bi .ico{width:22px;height:22px}
+  html.nk-compact .sec:not(.sec-hero) .sec-scroll{padding-top:calc(var(--hdr-h) + 6px)!important;padding-bottom:calc(var(--bar-h) + 6px + env(safe-area-inset-bottom,0px))!important}
+  html.nk-compact .nk-sec .sec-head{margin-bottom:8px;padding:8px 12px!important}
+  html.nk-compact .nk-sec .sec-head .kicker{display:none}
+  html.nk-compact .nk-sec .sec-head .h2{font-size:21px;margin-top:0}
+  html.nk-compact .nk-tile{padding:9px 24px 9px 11px}
+  html.nk-compact .nk-hint{display:none}
+  html.nk-compact .nk-intro{display:none}
+  html.nk-compact .nk-why2 li{padding:7px 10px;font-size:14px}
+  html.nk-compact .nk-btns{margin-top:8px}
+  html.nk-compact .nk-btns .btn{min-height:44px}
+  html.nk-compact .nk-btns-3 .btn,html.nk-compact .nk-btns-3 .btn:last-child{flex:1 1 0;font-size:13.5px;padding:0 6px}
+  html.nk-compact .nk-btns-3 .btn .ico{display:none}
+  html.nk-compact .nk-list-big{padding:10px 12px 10px 28px;gap:4px}
+  html.nk-compact .nk-team .nk-person{padding:8px 10px}
+  html.nk-compact #contacts .cbox-info{padding:10px 12px}
+  html.nk-compact .nk-cl{gap:6px}
+  html.nk-compact .nk-cl .cic{width:30px;height:30px}
+  html.nk-compact .nk-cl .addr-note{display:none}
+  html.nk-compact #contacts .map-actions{grid-template-columns:1fr 1fr}
+  html.nk-compact #contacts .map-actions .btn:first-child{grid-column:auto}
+  html.nk-compact #contacts .map-actions .btn:last-child{display:none}
+  html.nk-compact #contacts .map-actions .btn{min-height:44px}
+  html.nk-compact #book .fdesc{display:none}
+  html.nk-compact #book .fld input,html.nk-compact #book .fld select{min-height:42px;padding:7px 12px}
+  html.nk-compact #book .cbox.form .fg{gap:6px;margin-top:6px}
+  html.nk-compact #book .fld label{margin-bottom:2px}
+  html.nk-compact .nk-xbtn{min-height:56px;padding:10px 14px}
+  html.nk-compact #more .foot{margin-top:10px;font-size:12.5px}
+  html.nk-compact .nk-road{display:none}
+  html.nk-compact #about .sec-scroll{padding-bottom:calc(var(--bar-h) + 6px + env(safe-area-inset-bottom,0px))!important}
+  html.nk-compact .nkc-r3{--rh:16px;bottom:2px}
+  html.nk-compact .nkc-r3 .nkc-tl,html.nk-compact .nkc-r3 .nkc-tree{display:none}
+  html.nk-compact .nkc-v{width:calc(var(--w) * .36)}
+  html.nk-compact .nkc-v.nkc-back{width:calc(var(--w) * .3);bottom:calc(var(--rh) * .5 - 4px)}
+}
+/* подписи нижней панели не влезают (крупный шрифт) — только значки */
+html.nk-bar-icons .bar .bi span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+html.nk-bar-icons .bar .bi .ico{width:24px;height:24px}

@@ -1103,6 +1103,10 @@ html[data-hc="1"] :focus-visible{outline:3px solid #ffe14d;outline-offset:2px}
     if (c && c < h) h = c;
     try { var pr = document.createElement('div'); pr.style.cssText = 'position:fixed;top:0;left:0;width:0;height:100svh;visibility:hidden;pointer-events:none';
       document.body.appendChild(pr); var sv = pr.offsetHeight; pr.remove(); if (sv > 0 && sv < h) h = sv; } catch (e) { }
+    /* встроенные браузеры (Telegram) иногда отдают окно выше видимой части — сверяемся с visualViewport,
+       но не во время набора текста (клавиатура) и не при увеличении щипком */
+    var vv = window.visualViewport, a = document.activeElement;
+    if (vv && vv.scale <= 1.01 && !(a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))) { var vvh = Math.floor(vv.height); if (vvh > 240 && vvh < h) h = vvh; }
     return h;
   }
   function setVh() {
@@ -1847,7 +1851,41 @@ html[data-hc="1"] :focus-visible{outline:3px solid #ffe14d;outline-offset:2px}
      них при подборе k честно учитывается их настоящая (не ужатая) высота. */
   var TAP_EXEMPT_SEL = '.info-links .ilink,.map-actions .btn,.fg .btn-primary,.foot-demo a,.foot .fl a,.rsum .btn,.cl .msgs a';
   var MIN_ZOOM = 0.8;
+  /* шапка и нижняя панель при крупном шрифте телефона (встроенный браузер Telegram берёт размер шрифта из настроек)
+     выше, чем заложено в --hdr-h/--bar-h: берём их настоящую высоту, иначе низ раздела уходит под панель */
+  var safeProbe;
+  function measureChrome() {
+    html.style.removeProperty('--bar-h'); html.style.removeProperty('--hdr-h');
+    html.classList.remove('nk-bar-icons');
+    if (fsNow !== 1) return;
+    var bar = $('.bar'), hdr = $('.hdr');
+    if (bar) {
+      var caps = $$('.bi span', bar).some(function (sp) { return sp.offsetWidth > 0 && (sp.scrollWidth > sp.parentNode.clientWidth + 1 || sp.offsetHeight > 22); });
+      if (caps) html.classList.add('nk-bar-icons');
+      if (!safeProbe) { safeProbe = document.createElement('div'); safeProbe.style.cssText = 'position:fixed;left:0;bottom:0;width:0;height:0;visibility:hidden;padding-bottom:env(safe-area-inset-bottom,0px)'; document.body.appendChild(safeProbe); }
+      var safe = parseFloat(getComputedStyle(safeProbe).paddingBottom) || 0;
+      var bh = Math.ceil(bar.getBoundingClientRect().height - safe);
+      var cssBar = parseFloat(getComputedStyle(html).getPropertyValue('--bar-h')) || 0;
+      if (bh > cssBar + 1) html.style.setProperty('--bar-h', bh + 'px');
+    }
+    if (hdr) {
+      var hh = Math.ceil(hdr.getBoundingClientRect().height);
+      var cssHdr = parseFloat(getComputedStyle(html).getPropertyValue('--hdr-h')) || 0;
+      if (hh > cssHdr + 1) html.style.setProperty('--hdr-h', hh + 'px');
+    }
+  }
+  function overflowing() {
+    return $$('.sec').some(function (sec) { var sc = $('.sec-scroll', sec); return sc && sc.clientHeight && sc.scrollHeight > sc.clientHeight + 2; });
+  }
   function fitSections() {
+    var phone = window.innerWidth / fsNow <= 767;
+    if (!window.matchMedia('(max-height:700px)').matches) html.classList.remove('nk-compact');
+    measureChrome(); fitPass();
+    /* не влезло даже ужатым — плотная раскладка (как у низких телефонов) и ещё раз */
+    if (phone && overflowing() && !html.classList.contains('nk-compact')) { html.classList.add('nk-compact'); measureChrome(); fitPass(); }
+    if (typeof fitAnims === 'function') fitAnims();
+  }
+  function fitPass() {
     var wide = window.innerWidth / fsNow > 760;
     /* на широком экране тоже поджимаем, но чуть-чуть: секция контактов бывает
        выше окна, и подвал уезжает под нижнюю плашку */
@@ -1864,15 +1902,27 @@ html[data-hc="1"] :focus-visible{outline:3px solid #ffe14d;outline-offset:2px}
       inner.style.zoom = '';
       setExemptZoom('');
       var have = sc.clientHeight;
-      if (!have || sc.scrollHeight <= have + 2) return;
+      if (!have) return;
       /* zoom, а не transform: transform уменьшает картинку, но не размер блока,
          и секция всё равно осталась бы прокручиваемой */
-      var k = Math.max(have / sc.scrollHeight * 0.99, floor);
-      for (var i = 0; i < 6; i++) {
+      var k = 1, over = sc.scrollHeight > have + 2;
+      if (over) k = Math.max(have / sc.scrollHeight * 0.99, floor);
+      for (var i = 0; over && i < 6; i++) {
         inner.style.zoom = k;
         setExemptZoom(1 / k);
         if (sc.scrollHeight <= sc.clientHeight + 2 || k <= floor) break;
         k = Math.max(k * (sc.clientHeight / sc.scrollHeight) * 0.99, floor);
+      }
+      /* страховка: низ содержимого обязан стоять над нижней панелью видимой части окна */
+      if (fsNow === 1 && !sec.classList.contains('sec-hero') && window.innerWidth <= 767) {
+        var bar = $('.bar'), bh = bar ? bar.getBoundingClientRect().height : 0;
+        var limit = Math.min(sc.clientHeight, visH()) - bh - 4, top0 = sec.getBoundingClientRect().top;
+        for (var j = 0; j < 4; j++) {
+          var wb = inner.getBoundingClientRect().bottom - top0, wt = inner.getBoundingClientRect().top - top0;
+          if (wb <= limit || k <= 0.7) break;
+          k = Math.max(k * (limit - wt) / (wb - wt) * 0.99, 0.7);
+          inner.style.zoom = k; setExemptZoom(1 / Math.max(k, 0.86));
+        }
       }
     });
   }
