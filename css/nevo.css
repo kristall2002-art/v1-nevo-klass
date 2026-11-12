@@ -718,3 +718,15 @@ html[data-theme="dark"] .soc{background:rgba(16,28,46,.82);border-color:rgba(255
   .soc-i svg{width:23px;height:23px}.soc-vk .soc-i svg{width:25px}
   html[data-theme="dark"] .soc{background:none}
 }
+
+/* ноутбук и планшет (от 768 px): плашки категорий — всегда одной строкой; «Мы на связи» — подпись над тремя равными кнопками в одну строку.
+   Плашка первого экрана не уже 570 px, иначе на ноутбуках 1280 px категории и кнопки не помещались в строку */
+@media screen and (min-width:768px){
+  .hero-plq{--plq-w:clamp(570px,calc(42*var(--vwu,1vw)),700px)}
+  .hero-cats{flex-wrap:nowrap;gap:8px}
+  .hero-cats li{flex:0 0 auto;white-space:nowrap;font-size:14px;padding:7px 13px 7px 10px}
+  .hero-soc{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:14px}
+  .soc-cap{grid-column:1/-1;margin:0 0 -2px}
+  .soc{justify-content:center;padding:4px 14px 4px 4px;min-width:0}
+  .soc .soc-n{white-space:nowrap}
+}
