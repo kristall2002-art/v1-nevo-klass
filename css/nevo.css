@@ -605,7 +605,7 @@ html[data-theme="dark"] #services .sec-head{background:rgba(16,28,46,.96)}
 .sec:not(.active) .nk-anim *,.sec:not(.active) .nk-diag *{animation-play-state:paused!important}
 @media (prefers-reduced-motion:reduce){.nk-anim *,.nk-diag *{animation:none!important}}
 /* телефон: текст раздела — сразу под шапкой, всё свободное место — внизу, под живую картинку */
-@media (max-width:767px){.nk-sec .sec-scroll>.wrap{margin-top:0!important}}
+/* (снято 12.11: текст снова по центру, живых картинок внизу нет) */
 
 /* восьмая волна, правка: дороги контрастнее, позиции под обрезку по бокам на телефоне */
 .nk-anim,.nk-diag{--road:rgba(31,95,168,.16);--pad:rgba(31,95,168,.09)}
@@ -619,3 +619,8 @@ html[data-theme="dark"] #services .sec-head{background:rgba(16,28,46,.96)}
 .nka-leafl{transform-origin:380px 58px}.nka-leafr{transform-origin:620px 58px}
 @keyframes nkaHow{0%{transform:translateX(-160px);opacity:0}3%{opacity:1}10%,16%{transform:translateX(298px)}26%,32%{transform:translateX(398px)}42%,48%{transform:translateX(498px)}58%,64%{transform:translateX(598px)}74%,80%{transform:translateX(668px);opacity:1}92%{transform:translateX(1150px);opacity:0}100%{transform:translateX(1150px);opacity:0}}
 @keyframes nkaPark{0%{transform:translate(-160px,36px);opacity:0}4%{opacity:1}30%,36%{transform:translate(600px,36px)}58%,76%{transform:translate(500px,49px)}86%{transform:translate(640px,38px);opacity:1}97%,100%{transform:translate(1150px,36px);opacity:0}}
+
+/* 12.11: живые картинки сняты до выбора Сергея; убираем запас под дорогу в «Об автошколе» */
+#about .sec-scroll{padding-bottom:calc(var(--bar-h,60px) + 12px + env(safe-area-inset-bottom,0px))!important}
+@media (max-width:767px) and (max-height:700px){#about .sec-scroll{padding-bottom:calc(var(--bar-h) + 6px + env(safe-area-inset-bottom,0px))!important}}
+@media (max-width:767px){html.nk-compact #about .sec-scroll{padding-bottom:calc(var(--bar-h) + 6px + env(safe-area-inset-bottom,0px))!important}}
