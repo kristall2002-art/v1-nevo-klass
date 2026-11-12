@@ -691,7 +691,7 @@ html[data-theme="dark"] .v4-veil{background:linear-gradient(180deg,rgba(12,22,38
   .hdr-a11y{display:flex!important;border-left:0;padding-left:0;margin-left:0}
   .hdr-a11y #fsDown,.hdr-a11y #fsUp,.hdr-a11y #hcBtn{display:none}
   .hdr-a11y #themeBtn{width:42px;height:42px;opacity:1;border-radius:12px;border:1px solid rgba(255,255,255,.35)}
-  html[data-theme="light"]:not([data-hc="1"]) .hdr-a11y #themeBtn{border-color:rgba(31,95,168,.35);color:#1f5fa8}
+  html[data-theme="light"]:not([data-hc="1"]) .hdr-a11y #themeBtn{border:1.5px solid rgba(31,95,168,.6);background:rgba(31,95,168,.1);color:#1f5fa8}
 }
 @media screen and (max-width:480px){
   .hdr-book{font-size:0!important;padding:0 14px!important}
