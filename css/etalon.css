@@ -129,7 +129,10 @@ html.js .sec-hero:not(.go) .rv{opacity:0;translate:0 18px;animation:heroSafe .01
 .sec-hero{background:#8fb1d4;color:#fff;
   /* А−/А+ первый экран не трогают: страница в zoom, экран — встречный zoom (как шапка), поэтому он на любой ступени
      выглядит ровно как при 100 %. Единицы vw/vh и высота экрана считаются от окна без поправки. */
-  zoom:calc(1 / var(--zc,1)); --vwu:1vw; --vhu:1vh; --vh:calc(100 * var(--vhu))}
+  zoom:calc(1 / var(--zc,1)); --vwu:1vw; --vhu:1vh;
+  /* высота — та же видимая, что у остальных экранов (скрипт кладёт её в --vhr); 100vh во встроенном браузере Telegram на Android
+     считается при спрятанной верхней панели и выше видимой части — первый экран выходил выше, и все следующие съезжали вниз */
+  --vh:var(--vhr, calc(100 * var(--vhu)))}
 .hero-bg{position:absolute;inset:0;overflow:hidden;background:#9db9d6 url(../img/hero-poster.jpg) 54% 50%/cover no-repeat}
 .hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:54% 50%;background:transparent}
 .hero-clouds{
