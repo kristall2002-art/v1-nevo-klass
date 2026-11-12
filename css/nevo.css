@@ -684,3 +684,17 @@ html[data-theme="dark"] .v4-veil{background:linear-gradient(180deg,rgba(12,22,38
   .vb1 .t-lane{stroke:rgba(31,95,168,.32)}.vb1 .t-core{stroke-width:5}.vb1 .t-halo{stroke-width:14;opacity:.38}
   .vb2 .mp-m1{stroke:rgba(31,95,168,.5)}.vb2 .mp-m2{stroke:rgba(31,95,168,.4)}.vb2 .mp-m3{stroke:rgba(31,95,168,.28)}
 }
+
+/* телефон и планшет: переключатель светлой/тёмной темы виден прямо в шапке (раньше — только внутри меню-бургера);
+   А−/А+ и «для слабовидящих» остаются в меню; кнопка записи на узком экране короче, чтобы всё поместилось */
+@media screen and (max-width:860px){
+  .hdr-a11y{display:flex!important;border-left:0;padding-left:0;margin-left:0}
+  .hdr-a11y #fsDown,.hdr-a11y #fsUp,.hdr-a11y #hcBtn{display:none}
+  .hdr-a11y #themeBtn{width:42px;height:42px;opacity:1;border-radius:12px;border:1px solid rgba(255,255,255,.35)}
+  html[data-theme="light"]:not([data-hc="1"]) .hdr-a11y #themeBtn{border-color:rgba(31,95,168,.35);color:#1f5fa8}
+}
+@media screen and (max-width:480px){
+  .hdr-book{font-size:0!important;padding:0 14px!important}
+  .hdr-book::after{content:"Записаться";font-size:14px}
+  .hdr-tools{gap:6px}
+}
