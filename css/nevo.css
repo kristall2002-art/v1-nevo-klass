@@ -730,3 +730,11 @@ html[data-theme="dark"] .soc{background:rgba(16,28,46,.82);border-color:rgba(255
   .soc{justify-content:center;padding:4px 14px 4px 4px;min-width:0}
   .soc .soc-n{white-space:nowrap}
 }
+/* яркий фон: фирменный синий насыщеннее и контрастнее (Сергей 12.11) */
+.nk-sec .sec-bg{background:radial-gradient(circle at 90% 8%,rgba(56,189,248,.75),rgba(56,189,248,0) 38%),radial-gradient(circle at 6% 94%,rgba(255,201,77,.6),rgba(255,201,77,0) 40%),linear-gradient(150deg,#5a92f2 0%,#2a64cc 48%,#163c84 100%)}
+html[data-theme="dark"] .nk-sec .sec-bg{background:radial-gradient(circle at 90% 8%,rgba(56,189,248,.3),rgba(56,189,248,0) 40%),linear-gradient(150deg,#163a74 0%,#0f2752 55%,#0a1834 100%)}
+/* версия для слабовидящих: без живых фонов и анимаций */
+html[data-hc="1"] .nk-sec .sec-bg>*{display:none!important}
+html[data-hc="1"] *{animation:none!important;transition:none!important}
+html:not([data-theme="dark"]) .nk-sec .cbox,html:not([data-theme="dark"]) .nk-sec .sec-head,html:not([data-theme="dark"]) .nk-sec .glass{background:rgba(255,255,255,.94)!important}
+html[data-theme="dark"] .nk-sec .cbox,html[data-theme="dark"] .nk-sec .sec-head,html[data-theme="dark"] .nk-sec .glass{background:rgba(15,27,43,.93)!important}
