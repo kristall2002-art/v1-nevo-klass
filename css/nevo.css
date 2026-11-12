@@ -624,3 +624,58 @@ html[data-theme="dark"] #services .sec-head{background:rgba(16,28,46,.96)}
 #about .sec-scroll{padding-bottom:calc(var(--bar-h,60px) + 12px + env(safe-area-inset-bottom,0px))!important}
 @media (max-width:767px) and (max-height:700px){#about .sec-scroll{padding-bottom:calc(var(--bar-h) + 6px + env(safe-area-inset-bottom,0px))!important}}
 @media (max-width:767px){html.nk-compact #about .sec-scroll{padding-bottom:calc(var(--bar-h) + 6px + env(safe-area-inset-bottom,0px))!important}}
+
+/* ================= 12.11, девятая волна: живые фоны за содержимым (выбор Сергея: огни, карта района, Нева) ================= */
+
+.vb{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.vb svg{position:absolute;inset:0;width:100%;height:100%}
+/* 1 */
+.vb1 .t-body{fill:none;stroke:rgba(31,95,168,.08);stroke-width:110}
+.vb1 .t-b2{stroke-width:80}
+.vb1 .t-lane{fill:none;stroke:rgba(31,95,168,.24);stroke-width:1.6}
+.vb1 .t-core,.vb1 .t-halo{fill:none;stroke-linecap:round;animation:vbMove var(--t) linear var(--d) infinite}
+.vb1 .t-core{stroke-width:3.8;stroke-dasharray:42 958}
+.vb1 .t-halo{stroke-width:11;stroke-dasharray:170 830;opacity:.32}
+.vb1 .t-a{stroke:#f2a12b}.vb1 .t-w{stroke:#2f7de1}
+@keyframes vbMove{from{stroke-dashoffset:1000}to{stroke-dashoffset:0}}
+/* 2 */
+.vb2 .mp{opacity:.95}
+.vb2 .mp-drift{transform-box:view-box;transform-origin:50% 50%;animation:vbDrift 60s ease-in-out infinite alternate}
+.vb2 .mp-river{fill:rgba(31,95,168,.17)}
+.vb2 .mp-m1,.vb2 .mp-m2,.vb2 .mp-m3,.vb2 .mp-m4{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.vb2 .mp-m1{stroke:rgba(31,95,168,.38);stroke-width:4.5}
+.vb2 .mp-m2{stroke:rgba(31,95,168,.30);stroke-width:3.2}
+.vb2 .mp-m3{stroke:rgba(31,95,168,.18);stroke-width:2}
+.vb2 .mp-m4{stroke:rgba(31,95,168,.12);stroke-width:1.3}
+.vb2 .mp-none{fill:none;stroke:none}
+.vb2 .mp-a .mp-core{fill:#f2a12b}.vb2 .mp-a .mp-halo{fill:rgba(242,161,43,.28)}
+.vb2 .mp-w .mp-core{fill:#2f7de1}.vb2 .mp-w .mp-halo{fill:rgba(47,125,225,.25)}
+.vb2 .mp-dot{fill:#1f5fa8}.vb2 .mp-ring{fill:none;stroke:#1f5fa8;stroke-width:3;transform-box:fill-box;transform-origin:center;animation:vbPulse 2.4s ease-out infinite}
+@keyframes vbDrift{from{transform:scale(1.04) translate(-1.2%,.8%)}to{transform:scale(1.12) translate(1.2%,-.8%)}}
+@keyframes vbPulse{from{transform:scale(.6);opacity:.9}to{transform:scale(3.2);opacity:0}}
+
+.vb4 video{background:#dfeaf6 center/cover no-repeat;position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.v4-veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(238,245,252,.40),rgba(214,230,246,.34))}
+@media (prefers-reduced-motion:reduce){.vb *{animation:none!important}}
+
+.sec-bg .vb{z-index:0}
+/* разные виды одного фона на разных экранах */
+.vb1.vb-b svg{transform:scaleX(-1)}
+.vb1.vb-c svg{transform:scaleY(-1)}
+.vb2 .mp{transform-origin:50% 48.4%}
+.vb2.vb-z1 .mp{transform:scale(1)}
+.vb2.vb-z2 .mp{transform:scale(1.5) translate(-12%,6%)}
+.vb2.vb-z3 .mp{transform:scale(1.9)}
+.vb4.vb-v2 video{object-position:20% 50%}
+/* тёмная тема */
+html[data-theme="dark"] .vb1 .t-lane{stroke:rgba(140,180,230,.22)}
+html[data-theme="dark"] .vb1 .t-body{stroke:rgba(140,180,230,.06)}
+html[data-theme="dark"] .vb2 .mp-m1{stroke:rgba(140,180,230,.34)}
+html[data-theme="dark"] .vb2 .mp-m2{stroke:rgba(140,180,230,.27)}
+html[data-theme="dark"] .vb2 .mp-m3{stroke:rgba(140,180,230,.19)}
+html[data-theme="dark"] .vb2 .mp-m4{stroke:rgba(140,180,230,.12)}
+html[data-theme="dark"] .vb2 .mp-river{fill:rgba(91,143,204,.16)}
+html[data-theme="dark"] .vb2 .mp-dot{fill:#5b8fcc}html[data-theme="dark"] .vb2 .mp-ring{stroke:#5b8fcc}
+html[data-theme="dark"] .v4-veil{background:linear-gradient(180deg,rgba(12,22,38,.55),rgba(16,30,50,.5))}
+/* вне активного раздела всё стоит */
+.sec:not(.active) .vb *{animation-play-state:paused!important}
