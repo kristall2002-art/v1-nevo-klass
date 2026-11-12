@@ -4,9 +4,9 @@
 /* ---------- первый экран: светлое дневное фото, без видео ---------- */
 .hero-bg{background:#a9cdf0 url(../img/hero-poster.jpg) 58% 55%/cover no-repeat}
 .hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,255,255,.34) 0%,rgba(255,255,255,0) 52%)}
-.hero-plq{--plq-w:clamp(520px,calc(42*var(--vwu,1vw)),700px)}
-.hw{font-size:calc((var(--plq-w) - 2 * var(--plq-pad)) / 5.5);font-weight:600;letter-spacing:-.01em}
-.hn{font-size:clamp(20px,calc(2*var(--vwu,1vw)),28px);font-weight:500}
+@media screen and (min-width:768px){.hero-plq{--plq-w:clamp(520px,calc(42*var(--vwu,1vw)),700px)}}
+@media screen and (min-width:768px){.hw{font-size:calc((var(--plq-w) - 2 * var(--plq-pad)) / 5.5);font-weight:600;letter-spacing:-.01em}}
+@media screen and (min-width:768px){.hn{font-size:clamp(20px,calc(2*var(--vwu,1vw)),28px);font-weight:500}}
 html[data-theme="light"]:not([data-hc="1"]) .sec-hero{--glass:rgba(255,255,255,.78);--glass-blur:10px}
 html[data-theme="light"]:not([data-hc="1"]) .hero-plq .kicker{color:#1f5fa8}
 html[data-theme="light"]:not([data-hc="1"]) .hero-plq .kicker::before{background:#1f5fa8}
@@ -18,7 +18,7 @@ html[data-theme="light"]:not([data-hc="1"]) .hero-addr .addr-link:hover{color:#1
 .hero-cats li{display:inline-flex;align-items:center;gap:7px;padding:7px 14px 7px 11px;border-radius:999px;background:rgba(255,255,255,.85);border:1px solid rgba(31,95,168,.28);font-weight:600;font-size:14.5px;color:#12365f;text-shadow:none}
 .hero-cats .ico{width:16px;height:16px;color:#1f5fa8}
 .hero-cta{margin-top:18px}
-.hero-cta .btn-glass{flex:1 1 auto;white-space:nowrap}
+@media screen and (min-width:768px){.hero-cta .btn-glass{flex:1 1 auto;white-space:nowrap}}
 .hero-cta .btn-glass.btn-book{box-shadow:0 8px 24px rgba(240,170,20,.35)}
 .hero-addr{margin-top:14px}
 
@@ -46,13 +46,13 @@ html[data-theme="light"]:not([data-hc="1"]) .hdr .btn-primary,html[data-theme="l
 #contacts .sec-head .h2{margin-top:2px;font-size:28px}
 #contacts .sh-cta{min-height:46px}
 .addr-note{display:block;margin-top:2px;font-size:13px;color:var(--muted)}
-.contacts{grid-template-columns:1fr 1.15fr 1fr;gap:14px}
+@media (min-width:992px){.contacts{grid-template-columns:1fr 1.15fr 1fr;gap:14px}}
 .contacts .cbox{padding:14px 16px}
 .cl{gap:12px}
 .map{min-height:0;height:250px;flex:none}
 .cbox.form .fg{margin-top:8px;gap:7px}
 .form h3{font-size:18px}
-.fld input,.fld select,.fld textarea{padding:7px 11px}
+@media (min-width:768px){.fld input,.fld select,.fld textarea{padding:7px 11px}}
 .fld-hid{display:none}
 .foot{margin-top:12px;padding:10px 18px}
 .foot p{margin:0}
@@ -73,9 +73,53 @@ html[data-theme="light"]:not([data-hc="1"]) .nav-a.cur,html[data-theme="light"]:
 .cl .addr-link{display:inline;border-bottom:0;padding:0;margin:0;text-decoration:underline;text-decoration-color:rgba(31,95,168,.45);text-underline-offset:3px}
 .cl .addr-link:hover{color:#1f5fa8}
 .map{flex:1 1 auto;min-height:250px;height:auto}
-.hw{font-size:calc((var(--plq-w) - 2 * var(--plq-pad)) / 5.9)}
+@media screen and (min-width:768px){.hw{font-size:calc((var(--plq-w) - 2 * var(--plq-pad)) / 5.9)}}
 html[data-theme="light"]:not([data-hc="1"]) .foot{color:#22344d}
 .cl .cat-line{font-weight:500}
 
 /* карта Яндекса в узкой колонке рисует снизу «шторку» с карточкой места: обрезаем её, подпись «© Яндекс» остаётся */
 .map iframe{height:calc(100% + 78px)}
+
+/* ---------- телефон (до 767 px): правила выше для широкого экрана сюда не доходят ---------- */
+@media screen and (max-width:767px){
+  .hw{font-weight:600;letter-spacing:-.01em;font-size:clamp(34px,calc(13.4*var(--vwu,1vw)),64px)}
+  .hn{font-weight:500}
+  .hero-lead{margin-top:10px}
+  .hero-cats{margin-top:12px;gap:6px}
+  .hero-cats li{font-size:13.5px;padding:6px 12px 6px 9px}
+  .hero-cta{flex-wrap:wrap;gap:8px}
+  .hero-cta .btn-glass{flex:1 1 100%;white-space:normal;min-height:50px}
+  .hero-plq .kicker{font-size:12px}
+}
+@media (max-width:767px){
+  #contacts .sec-head{padding:12px 14px!important;flex-wrap:wrap;gap:10px}
+  #contacts .sec-head .h2{font-size:26px}
+  #contacts .sh-cta{width:100%;justify-content:center;min-height:48px}
+  .contacts .cbox{padding:16px}
+  .map{min-height:240px}
+  .map-actions{flex-wrap:wrap}
+  .map-actions .btn{flex:1 1 100%;min-height:48px;justify-content:center}
+  .fld label{font-size:14px;margin-bottom:4px}
+  .fld input,.fld select,.fld textarea{min-height:48px;padding:10px 12px;font-size:16px}
+  .cbox.form .fg{gap:10px}
+  .cbox.form .btn{min-height:50px;width:100%;justify-content:center}
+  .fnote,.fdesc{font-size:13.5px}
+  .foot{font-size:13.5px;line-height:1.45}
+  .foot a{display:inline-block;padding:6px 0}
+  .foot .fl{display:flex;flex-wrap:wrap;gap:4px 16px}
+  .hours-link{display:inline-block;padding:8px 0}
+}
+@media screen and (max-width:479px){
+  .brand-s{font-size:10.5px}
+  .brand-n{font-size:14px}
+}
+@media screen and (max-width:400px){
+  .brand-n{white-space:nowrap}
+  .hdr-book{padding:0 12px;font-size:13px;white-space:nowrap}
+  .hdr-in{gap:8px}
+}
+/* узкий телефон: в нижней панели пять пунктов вместо шести — «Почта» дублирует «Написать» */
+@media (max-width:400px){
+  .bar .bi[href^="mailto:"]{display:none}
+}
+.nowrap{white-space:nowrap}
