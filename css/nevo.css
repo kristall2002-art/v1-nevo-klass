@@ -698,3 +698,23 @@ html[data-theme="dark"] .v4-veil{background:linear-gradient(180deg,rgba(12,22,38
   .hdr-book::after{content:"Записаться";font-size:14px}
   .hdr-tools{gap:6px}
 }
+
+/* первый экран: мессенджеры и соцсети школы — WhatsApp, Telegram, ВКонтакте (ссылки с сайта школы, страница «Контакты») */
+.hero-soc{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:12px}
+.soc-cap{font-size:14px;font-weight:600;opacity:.9;margin-right:2px}
+.soc{display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:4px 12px 4px 4px;border-radius:999px;background:rgba(255,255,255,.88);border:1px solid rgba(31,95,168,.22);color:#12365f;font-weight:600;font-size:14px;text-decoration:none;text-shadow:none;transition:transform .15s,box-shadow .15s}
+.soc:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(20,40,70,.18)}
+.soc-i{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:#fff;flex:none}
+.soc-i svg{width:19px;height:19px}
+.soc-wa .soc-i{background:#25d366}.soc-tg .soc-i{background:#2aabee}.soc-vk .soc-i{background:#0077ff}
+.soc-tg .soc-i svg{margin-left:-2px}.soc-vk .soc-i svg{width:21px}
+html[data-theme="dark"] .soc{background:rgba(16,28,46,.82);border-color:rgba(255,255,255,.2);color:#e6eef8}
+/* телефон: подпись и три круглых значка в одну строку */
+@media screen and (max-width:767px){
+  .hero-soc{margin-top:10px;gap:10px;flex-wrap:nowrap}
+  .soc{padding:0;min-height:0;background:none;border:0;box-shadow:none}
+  .soc .soc-n{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .soc-i{width:44px;height:44px;box-shadow:0 4px 12px rgba(20,40,70,.22)}
+  .soc-i svg{width:23px;height:23px}.soc-vk .soc-i svg{width:25px}
+  html[data-theme="dark"] .soc{background:none}
+}
