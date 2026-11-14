@@ -2005,5 +2005,7 @@ html[data-hc="1"] :focus-visible{outline:3px solid #ffe14d;outline-offset:2px}
 <script src="js/title-b.js" defer></script>
 <script src="js/fit-title.js" defer></script>
 <script src="js/diag.js?v=1"></script>
+<!-- visits-counter: заход на сайт школы; без cookies и хранилища, IP не сохраняется; ?k=1 — наш просмотр -->
+<script>(function(){try{var q=location.search,s=(location.pathname.split('/')[1]||'').toLowerCase();if(!s)return;var n=0,done=false,iv=setInterval(function(){if(done)return;if(document.visibilityState==='visible')n++;if(n<3)return;done=true;clearInterval(iv);var u='https://rinazolotareva.ru/vseti-api/avto-hit?s='+encodeURIComponent(s)+'&k='+(/[?&]k=1\b/.test(q)?1:0)+'&w='+(navigator.webdriver?1:0)+'&m='+(/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)?1:0);if(!(navigator.sendBeacon&&navigator.sendBeacon(u)))new Image().src=u;},1000);}catch(e){}})();</script>
 </body>
 </html>
